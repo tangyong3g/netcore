@@ -1,0 +1,69 @@
+﻿
+
+# built application files
+
+# files for the dex VM
+
+/captures
+*.iml
+
+# Java class files
+*.class
+
+# generated files
+bin/
+gen/
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Eclipse project files
+.classpath
+.project
+project.properties
+
+
+# svn file
+.svn/
+.settings/
+
+#gradle ignore
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+.DS_Store
+/build
+/.idea/*
+gradle/wrapper/gradle-wrapper.jar
+gradle/wrapper/gradle-wrapper.properties
+gradlew.bat
+gradlew
+
+target/
+obj/
+out/
+classes/
+.gwt/
+gwt-unitCache/
+war/
+x64/
+ipch/
+/dist
+
+*.a
+*.dll
+*.dll.mdb
+*.userprefs
+*.sdf
+*.class
+
+*.iml
+/.idea/
+
+
+#忽略 *.iml 文件
+*.iml
+
+
+/projectFilesBackup/.idea

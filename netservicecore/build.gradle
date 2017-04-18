@@ -1,0 +1,67 @@
+apply plugin: 'com.android.library'
+
+android {
+
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+
+        debug {
+            debuggable true
+            buildConfigField("String", "configuration", "\"https://tlauncher-api.tclclouds.com/tlauncher-api/api/kvp\"")
+        }
+
+
+        release {
+            minifyEnabled false
+            debuggable true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField("String", "configuration", "\"https://tlauncher-api.tclclouds.com/tlauncher-api/api/kvp\"")
+        }
+
+    }
+
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+    }
+
+    sourceSets {
+        main {
+            assets.srcDirs = ['assets']
+        }
+    }
+
+    dexOptions {
+        //Declares whether to pre-dex library dependencies so that your incremental builds are faster. Because this feature may slow down your clean builds, you may want to disable this feature for your continuous integration server.
+        preDexLibraries true
+        //Sets the maximum number of threads to use while running dex-in-process. The default is 4.
+        maxProcessCount 8
+        // Instead of setting the heap size for the DEX process, increase Gradle's
+//         javaMaxHeapSize "2048m"
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.squareup.okhttp3:okhttp:3.2.0'
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.android.support:appcompat-v7:25.0.0'
+    testCompile 'junit:junit:4.12'
+}

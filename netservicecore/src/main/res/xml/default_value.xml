@@ -1,0 +1,99 @@
+<defaultsMap>
+    <entry>
+        <key>joy_v2_is_show_hot_game</key>
+        <value>true</value>
+    </entry>
+
+    <entry>
+        <key>joylauncher_v1_show_hot_site</key>
+        <value>true</value>
+    </entry>
+
+    <entry>
+        <key>joy_v2_is_show_hot_site</key>
+        <value>true</value>
+    </entry>
+
+    <entry>
+        <key>hi_launcher_show_hot_game</key>
+        <value>1</value>
+    </entry>
+
+
+    <entry>
+        <key>hi_launcher_show_hot_site</key>
+        <value>1</value>
+    </entry>
+
+    <entry>
+        <key>joy_v1_is_show_lock_screen</key>
+        <value>true</value>
+    </entry>
+
+    <entry>
+        <key>joy_v2_is_show_lock_screen</key>
+        <value>true</value>
+    </entry>
+
+    <entry>
+        <key>JRD_V2_AD_COUNT</key>
+        <value>4</value>
+    </entry>
+
+    <entry>
+        <key>JRD_V2_AD_FORBED_TIME</key>
+        <value>7200</value>
+    </entry>
+
+    <entry>
+        <key>JRD_AD_COUNT</key>
+        <value>4</value>
+    </entry>
+
+    <entry>
+        <key>joy_v2_is_show_hot_game</key>
+        <value>true</value>
+    </entry>
+
+    <entry>
+        <key>joylauncher_v1_show_hot_site</key>
+        <value>true</value>
+    </entry>
+
+    <entry>
+        <key>joy_v2_is_show_hot_site</key>
+        <value>true</value>
+    </entry>
+
+    <entry>
+        <key>hi_launcher_show_hot_game</key>
+        <value>1</value>
+    </entry>
+
+    <entry>
+        <key>joy_v1_is_show_lock_screen</key>
+        <value>true</value>
+    </entry>
+
+    <entry>
+        <key>joy_v2_is_show_lock_screen</key>
+        <value>true</value>
+    </entry>
+
+    <entry>
+        <key>JRD_V2_AD_COUNT</key>
+        <value>4</value>
+    </entry>
+
+    <entry>
+        <key>JRD_V2_AD_FORBED_TIME</key>
+        <value>7200</value>
+    </entry>
+
+
+    <entry>
+        <key>JRD_AD_COUNT</key>
+        <value>4</value>
+    </entry>
+
+</defaultsMap>
