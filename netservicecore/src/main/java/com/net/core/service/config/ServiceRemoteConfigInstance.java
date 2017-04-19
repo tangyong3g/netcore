@@ -6,7 +6,6 @@ import android.util.Log;
 
 import com.net.core.BuildConfig;
 import com.net.core.unit.AESUtil;
-import com.net.core.unit.Base64Utils;
 import com.net.core.unit.SPUtils;
 
 import org.json.JSONArray;
@@ -28,6 +27,31 @@ import okhttp3.Response;
 /**
  * Created by tyler.tang on 2017/4/13.
  * <p>
+ * <p>
+ * {@link ServiceRemoteConfigInstance} 主要用来获取远程服务器配置内容
+ * <p>
+ * 使用方法:
+ * <p>
+ * 1 : ${@link ServiceRemoteConfigInstance#getInstance(Context)} 实始化实例
+ * 2:  ${@link ServiceRemoteConfigInstance#setDefaultValue(String)} 设置默认值
+ * 3:   ${@link ServiceRemoteConfigInstance#getString(String)} 获取应的值
+ * <p>
+ * <p>
+ * * <blockquote>
+ * <pre>
+ *               ServiceRemoteConfigInstance.getInstance(getApplicationContext()).setDefaultValue("default_value.xml");
+ *                 ServiceRemoteConfigInstance.getInstance(getApplicationContext()).getString("joy_v2_is_show_hot_game");
+ *      </pre>
+ * </blockquote>
+ * <p>
+ * <p>
+ * <p>
+ * 注意事项
+ * 数据缓存默认是 24小时，意味着服务器配置的数据，在客户端生效的时间会在 0-24小时。如果值更新的时间期望更快，那么可以调用如下方法调整
+ * <p>
+ * ${@link ServiceRemoteConfigInstance#setCacheTime(long)}
+ * <p>
+ * </p>
  */
 public class ServiceRemoteConfigInstance {
 
@@ -44,7 +68,7 @@ public class ServiceRemoteConfigInstance {
     //日志 Tag
     private static final String TAG = "ServiceConfig";
     //数据缓存的时间 默认一个小时
-    private long mCacheTime = 3600 * 1000;
+    private long mCacheTime = 3600 * 1000 * 24;
     //服务器接口URL
     private static final String CONFIGURATION_URL = BuildConfig.configuration;
     //本地数据是否超时
@@ -104,7 +128,9 @@ public class ServiceRemoteConfigInstance {
     public void setDefaultValue(String fileName) throws XmlPullParserException, IOException {
 
         if (mDefaultValue != null && mDefaultValue.size() > 0) {
-            Log.i(TAG, "remote default has initialized :\n" + showRemoteDefaultValue());
+            if (BuildConfig.DEBUG) {
+                Log.i(TAG, "remote default has initialized :\n" + showRemoteDefaultValue());
+            }
             return;
         }
 
@@ -120,7 +146,7 @@ public class ServiceRemoteConfigInstance {
 
         if (BuildConfig.DEBUG) {
             Log.i(TAG, "init Service Config finish!");
-            Log.i(TAG, "remote default value:\t" + showRemoteDefaultValue());
+            Log.i(TAG, "remote default value:\n" + showRemoteDefaultValue());
         }
     }
 
@@ -139,35 +165,24 @@ public class ServiceRemoteConfigInstance {
         if (!isTimeOut()) {
             result = mServerValue.get(key);
         } else {
+            if(BuildConfig.DEBUG){
+                Log.i(TAG,"remote value is timeout fetch value retry!");
+            }
             // 每次get的时候，如果数据超时会重新请求，但是会为下一次使用。当次使用的是上一次的数值,如果没有网络，获取失败会是默认值
             fetchValue();
         }
 
         if (TextUtils.isEmpty(result)) {
             result = mDefaultValue.get(key);
+            if(BuildConfig.DEBUG){
+                Log.i(TAG,"the value is from default !");
+            }
         }
 
         if (BuildConfig.DEBUG) {
             Log.i(TAG, "the value of the key is :\t" + result);
         }
         return result;
-    }
-
-
-    /**
-     * 解密解压缩
-     *
-     * @param str
-     * @param aesKey       AES算法秘钥
-     * @param isUncompress 是否解压
-     * @return 返回解密解压的json字符串
-     * @throws Exception
-     */
-    private static String decryptUncompress(String str, String aesKey, boolean isUncompress) throws Exception {
-        if (TextUtils.isEmpty(str)) return null;
-        byte[] decodeBase64Byte = Base64Utils.decodeBase64(str);
-        byte[] decodeAesByte = AESUtil.decrypt2(decodeBase64Byte, aesKey);
-        return new String(decodeAesByte);
     }
 
     private String getReturnDataFromJson(String returnData, String key) {
@@ -282,7 +297,7 @@ public class ServiceRemoteConfigInstance {
         String value = null;
 
         try {
-            decodeStr = decryptUncompress(dataStr, AES_KEY, false);
+            decodeStr = AESUtil.decryptUncompress(dataStr, AES_KEY, false);
             JSONObject json = new JSONObject(decodeStr);
             value = json.getString("configuration");
         } catch (JSONException jx) {
@@ -367,6 +382,5 @@ public class ServiceRemoteConfigInstance {
         }
         return sb.toString();
     }
-
 
 }

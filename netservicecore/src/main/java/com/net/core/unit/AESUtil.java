@@ -1,18 +1,16 @@
 package com.net.core.unit;
 
+import android.text.TextUtils;
+
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 
 /**
- *
- *
  * 加密工具类
- *
- *  涵盖加密和解密方法
- *
- *
+ * <p>
+ * 涵盖加密和解密方法
  */
 public class AESUtil {
 
@@ -84,5 +82,21 @@ public class AESUtil {
             e.printStackTrace();
             return null;
         }
+    }
+
+    /**
+     * 解密解压缩
+     *
+     * @param str
+     * @param aesKey       AES算法秘钥
+     * @param isUncompress 是否解压
+     * @return 返回解密解压的json字符串
+     * @throws Exception
+     */
+    public static String decryptUncompress(String str, String aesKey, boolean isUncompress) throws Exception {
+        if (TextUtils.isEmpty(str)) return null;
+        byte[] decodeBase64Byte = Base64Utils.decodeBase64(str);
+        byte[] decodeAesByte = AESUtil.decrypt2(decodeBase64Byte, aesKey);
+        return new String(decodeAesByte);
     }
 }

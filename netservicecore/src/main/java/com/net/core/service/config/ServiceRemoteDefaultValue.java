@@ -15,6 +15,9 @@ import java.util.List;
 
 /**
  * Created by tyler.tang on 2017/4/13.
+ * <p>
+ * <p>
+ * 读取xml文件值
  */
 public class ServiceRemoteDefaultValue {
 
@@ -128,6 +131,9 @@ public class ServiceRemoteDefaultValue {
     }
 
 
+    /**
+     * 健 值  Entry
+     */
     class Entry {
 
         String mKey;
