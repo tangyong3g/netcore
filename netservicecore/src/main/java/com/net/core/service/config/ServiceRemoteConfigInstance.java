@@ -167,7 +167,7 @@ public class ServiceRemoteConfigInstance {
     /**
      * 根据Key值获取对应的值
      * <p>
-     * TODO 实时性的问题还需要解决 ,这样设计有缺陷，第一次使用的都是默认值
+     * TODO 实时性的问题还需要解决 ,这样设计有缺陷，第一次使用的是服务器上一次值 ，那么到下一次才能够有得到
      *
      * @param key
      * @return
@@ -176,19 +176,25 @@ public class ServiceRemoteConfigInstance {
         String result = null;
 
         //从服务器缓存得到 没有超时的时候
-        if (!isTimeOut()) {
-            result = mServerValue.get(key);
-        } else {
+        if (isTimeOut()) {
             if (BuildConfig.DEBUG) {
-                Log.i(TAG, "remote value is timeout fetch value retry!");
+                Log.i(TAG, "remote value is timeout fetch value !");
             }
             // 每次get的时候，如果数据超时会重新请求，但是会为下一次使用。当次使用的是上一次的数值,如果没有网络，获取失败会是默认值
             fetchValue();
         }
 
+        //优先服务器数据，如果没有使用默认数据
+        if(mServerValue != null){
+            result = mServerValue.get(key);
 
-        //从本地默认文件数据中获取
-        if (TextUtils.isEmpty(result)) {
+            if (BuildConfig.DEBUG) {
+                Log.i(TAG, "the key "+key+"of  value "+result+" is from server local !");
+            }
+
+            return result;
+
+        }else{
             result = mDefaultValue.get(key);
 
             if(TextUtils.isEmpty(result)){
@@ -198,12 +204,9 @@ public class ServiceRemoteConfigInstance {
             if (BuildConfig.DEBUG) {
                 Log.i(TAG, "the value is from default !");
             }
+            return result;
         }
 
-        if (BuildConfig.DEBUG) {
-            Log.i(TAG, "the value of the key : " + key + "is :\t" + result);
-        }
-        return result;
     }
 
     private String getReturnDataFromJson(String returnData, String key) {
