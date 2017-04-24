@@ -79,7 +79,17 @@ public class ServiceRemoteConfigInstance {
     private static final String LAST_FETCHTIME_KEY = "lastFetchTime";
     //存储默认值文件默认名称
     public static final String DEFAULT_FILENAME = "default_value.xml";
+    // Fetch后的回调
+    private com.net.core.service.config.Callback  mServiceConfigCallBack ;
 
+    /**
+     * 设置 fetch后的回调
+     *
+     * @param callBack
+     */
+    public void setCallBack(com.net.core.service.config.Callback callBack){
+        mServiceConfigCallBack = callBack;
+    }
 
     //对外公开的接口
     public static ServiceRemoteConfigInstance getInstance(Context context) {
@@ -247,11 +257,9 @@ public class ServiceRemoteConfigInstance {
      * 获取所有服务器的配置数据
      */
     public void fetchValue() {
-
         if (BuildConfig.DEBUG) {
             Log.i(TAG, "url is " + BuildConfig.configuration);
         }
-
         //创建OkHttpClient对象
         OkHttpClient okHttpClient = new OkHttpClient();
         //创建Request 跟据URL  Request的Build可以创建Request对象
@@ -266,6 +274,9 @@ public class ServiceRemoteConfigInstance {
                 if (BuildConfig.DEBUG) {
                     Log.i(TAG, "fetch data failure!！" + BuildConfig.configuration);
                 }
+                if(mServiceConfigCallBack != null){
+                    mServiceConfigCallBack.onFailure(call,e);
+                }
             }
 
             @Override
@@ -276,11 +287,15 @@ public class ServiceRemoteConfigInstance {
                 //处理数据 【解密以及获取 configuration 】
                 String value = resolveServerData(response);
                 //把服务器的数据存储到本地来 mem
-                storeJsonDataToLocal(value);
+                Map<String,String>  values  =   storeJsonDataToLocal(value);
                 long currentTime = System.currentTimeMillis();
                 //存储获取时间
                 SPUtils.put(mContext, LAST_FETCHTIME_KEY, currentTime);
                 mLastFetchTime = currentTime;
+
+                if(mServiceConfigCallBack != null){
+                    mServiceConfigCallBack.onResponse(call,values);
+                }
             }
         });
     }
@@ -405,5 +420,7 @@ public class ServiceRemoteConfigInstance {
         }
         return sb.toString();
     }
+
+
 
 }
