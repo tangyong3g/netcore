@@ -79,17 +79,6 @@ public class ServiceRemoteConfigInstance {
     private static final String LAST_FETCHTIME_KEY = "lastFetchTime";
     //存储默认值文件默认名称
     public static final String DEFAULT_FILENAME = "default_value.xml";
-    // Fetch后的回调
-    private com.net.core.service.config.Callback  mServiceConfigCallBack ;
-
-    /**
-     * 设置 fetch后的回调
-     *
-     * @param callBack
-     */
-    public void setCallBack(com.net.core.service.config.Callback callBack){
-        mServiceConfigCallBack = callBack;
-    }
 
     //对外公开的接口
     public static ServiceRemoteConfigInstance getInstance(Context context) {
@@ -274,8 +263,49 @@ public class ServiceRemoteConfigInstance {
                 if (BuildConfig.DEBUG) {
                     Log.i(TAG, "fetch data failure!！" + BuildConfig.configuration);
                 }
-                if(mServiceConfigCallBack != null){
-                    mServiceConfigCallBack.onFailure(call,e);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (BuildConfig.DEBUG) {
+                    Log.i(TAG, "fetch data success!");
+                }
+                //处理数据 【解密以及获取 configuration 】
+                String value = resolveServerData(response);
+                //把服务器的数据存储到本地来 mem
+                Map<String,String>  values  =   storeJsonDataToLocal(value);
+                long currentTime = System.currentTimeMillis();
+                //存储获取时间
+                SPUtils.put(mContext, LAST_FETCHTIME_KEY, currentTime);
+                mLastFetchTime = currentTime;
+            }
+        });
+    }
+
+
+    /**
+     * 获取所有服务器的配置数据
+     */
+    public void fetchValue(final com.net.core.service.config.Callback callback) {
+        if (BuildConfig.DEBUG) {
+            Log.i(TAG, "url is " + BuildConfig.configuration);
+        }
+        //创建OkHttpClient对象
+        OkHttpClient okHttpClient = new OkHttpClient();
+        //创建Request 跟据URL  Request的Build可以创建Request对象
+        final Request request = new Request.Builder().url(BuildConfig.configuration).build();
+        //创建Call 对象，实际是上执行任务
+        Call call = okHttpClient.newCall(request);
+
+        //把请求加入到队列之中
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                if (BuildConfig.DEBUG) {
+                    Log.i(TAG, "fetch data failure!！" + BuildConfig.configuration);
+                }
+                if(callback != null){
+                    callback.onFailure(call,e);
                 }
             }
 
@@ -293,8 +323,8 @@ public class ServiceRemoteConfigInstance {
                 SPUtils.put(mContext, LAST_FETCHTIME_KEY, currentTime);
                 mLastFetchTime = currentTime;
 
-                if(mServiceConfigCallBack != null){
-                    mServiceConfigCallBack.onResponse(call,values);
+                if(callback != null){
+                    callback.onResponse(call,values);
                 }
             }
         });

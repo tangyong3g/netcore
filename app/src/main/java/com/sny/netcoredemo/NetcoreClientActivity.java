@@ -68,17 +68,17 @@ public class NetcoreClientActivity extends AppCompatActivity {
         } catch (IOException io) {
             io.printStackTrace();
         }
-        ServiceRemoteConfigInstance.getInstance(getApplicationContext()).setCallBack(new Callback() {
+        ServiceRemoteConfigInstance.getInstance(getApplicationContext()).fetchValue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
             }
+
             @Override
             public void onResponse(Call call, Map<String, String> values) throws IOException {
                 String rs = showRemoteValue(values);
-                Log.i("ServiceConfig","结果是。 is :\t\n"+rs);
+                Log.i("ServiceConfig", "结果是。 is :\t\n" + rs);
             }
         });
-        ServiceRemoteConfigInstance.getInstance(getApplicationContext()).fetchValue();
 
     }
 
