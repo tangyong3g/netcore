@@ -77,6 +77,8 @@ public class ServiceRemoteConfigInstance {
     private long mLastFetchTime = 0L;
     //存储用的key
     private static final String LAST_FETCHTIME_KEY = "lastFetchTime";
+    //存储默认值文件默认名称
+    public static final String DEFAULT_FILENAME = "default_value.xml";
 
 
     //对外公开的接口
@@ -112,8 +114,16 @@ public class ServiceRemoteConfigInstance {
         }
         mLastFetchTime = (Long) SPUtils.get(mContext, LAST_FETCHTIME_KEY, 0L);
 
+        try {
+            setDefaultValue(DEFAULT_FILENAME);
+        } catch (XmlPullParserException xmlEx) {
+            xmlEx.printStackTrace();
+        } catch (IOException io) {
+            io.printStackTrace();
+        }
+
         if (BuildConfig.DEBUG) {
-            Log.i(TAG, "init service configuration");
+            Log.i(TAG, "init ServiceRemoteConfigInstance finish");
             Log.i(TAG, "last fetch time is :\t" + mLastFetchTime);
         }
     }
@@ -132,6 +142,10 @@ public class ServiceRemoteConfigInstance {
                 Log.i(TAG, "remote default has initialized :\n" + showRemoteDefaultValue());
             }
             return;
+        } else {
+            if (BuildConfig.DEBUG) {
+                Log.i(TAG, "remote default init start");
+            }
         }
 
         ServiceRemoteDefaultValue defaultValue = new ServiceRemoteDefaultValue();
@@ -165,22 +179,29 @@ public class ServiceRemoteConfigInstance {
         if (!isTimeOut()) {
             result = mServerValue.get(key);
         } else {
-            if(BuildConfig.DEBUG){
-                Log.i(TAG,"remote value is timeout fetch value retry!");
+            if (BuildConfig.DEBUG) {
+                Log.i(TAG, "remote value is timeout fetch value retry!");
             }
             // 每次get的时候，如果数据超时会重新请求，但是会为下一次使用。当次使用的是上一次的数值,如果没有网络，获取失败会是默认值
             fetchValue();
         }
 
+
+        //从本地默认文件数据中获取
         if (TextUtils.isEmpty(result)) {
             result = mDefaultValue.get(key);
-            if(BuildConfig.DEBUG){
-                Log.i(TAG,"the value is from default !");
+
+            if(TextUtils.isEmpty(result)){
+                Log.i(TAG,"the key "+key+"has not initialized in file "+DEFAULT_FILENAME);
+            }
+
+            if (BuildConfig.DEBUG) {
+                Log.i(TAG, "the value is from default !");
             }
         }
 
         if (BuildConfig.DEBUG) {
-            Log.i(TAG, "the value of the key is :\t" + result);
+            Log.i(TAG, "the value of the key : " + key + "is :\t" + result);
         }
         return result;
     }
@@ -281,7 +302,6 @@ public class ServiceRemoteConfigInstance {
         }
         return result;
     }
-
 
     /**
      * 处理服务器数据 【解密以及获取 configration值】

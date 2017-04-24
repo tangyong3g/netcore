@@ -1,24 +1,14 @@
 <defaultsMap>
-    <entry>
-        <key>joy_v2_is_show_hot_game</key>
-        <value>true</value>
-    </entry>
 
-    <entry>
-        <key>joylauncher_v1_show_hot_site</key>
-        <value>true</value>
-    </entry>
+    <!--                     Hi launcher                -->
 
-    <entry>
-        <key>joy_v2_is_show_hot_site</key>
-        <value>true</value>
-    </entry>
+    <!-- note 本质上只有可能是Hi Launcher数据，但是现在数据是混在一个接口里面所以 配置的默认数据涵盖了接口里面的所有数据-->
+
 
     <entry>
         <key>hi_launcher_show_hot_game</key>
         <value>1</value>
     </entry>
-
 
     <entry>
         <key>hi_launcher_show_hot_site</key>
@@ -26,29 +16,47 @@
     </entry>
 
     <entry>
-        <key>joy_v1_is_show_lock_screen</key>
-        <value>true</value>
-    </entry>
-
-    <entry>
-        <key>joy_v2_is_show_lock_screen</key>
-        <value>true</value>
-    </entry>
-
-    <entry>
         <key>JRD_V2_AD_COUNT</key>
         <value>4</value>
-    </entry>
-
-    <entry>
-        <key>JRD_V2_AD_FORBED_TIME</key>
-        <value>7200</value>
     </entry>
 
     <entry>
         <key>JRD_AD_COUNT</key>
         <value>4</value>
     </entry>
+
+    <entry>
+        <key>AD_COUNT</key>
+        <value>4</value>
+    </entry>
+
+    <entry>
+        <key>AD_FORBED_TIME</key>
+        <value>7200</value>
+    </entry>
+
+    <entry>
+        <key>pro_feedback_facebook</key>
+        <value>https://www.facebook.com/HiLauncherAPP</value>
+    </entry>
+
+    <entry>
+        <key>pro_feedback_google</key>
+        <value>https://plus.google.com/u/0/115040362923349706990/posts</value>
+    </entry>
+
+    <entry>
+        <key>hi_launcher_show_hot_game</key>
+        <value>1</value>
+    </entry>
+
+    <entry>
+        <key>HI_BOOST_STYLE</key>
+        <value>0</value>
+    </entry>
+
+
+    <!--               -->
 
     <entry>
         <key>joy_v2_is_show_hot_game</key>
@@ -66,9 +74,42 @@
     </entry>
 
     <entry>
-        <key>hi_launcher_show_hot_game</key>
-        <value>1</value>
+        <key>joy_v1_is_show_lock_screen</key>
+        <value>true</value>
     </entry>
+
+    <entry>
+        <key>joy_v2_is_show_lock_screen</key>
+        <value>true</value>
+    </entry>
+
+
+    <entry>
+        <key>JRD_V2_AD_FORBED_TIME</key>
+        <value>7200</value>
+    </entry>
+
+    <entry>
+        <key>JRD_AD_COUNT</key>
+        <value>4</value>
+    </entry>
+
+
+    <entry>
+        <key>joy_v2_is_show_hot_game</key>
+        <value>true</value>
+    </entry>
+
+    <entry>
+        <key>joylauncher_v1_show_hot_site</key>
+        <value>true</value>
+    </entry>
+
+    <entry>
+        <key>joy_v2_is_show_hot_site</key>
+        <value>true</value>
+    </entry>
+
 
     <entry>
         <key>joy_v1_is_show_lock_screen</key>
@@ -80,10 +121,6 @@
         <value>true</value>
     </entry>
 
-    <entry>
-        <key>JRD_V2_AD_COUNT</key>
-        <value>4</value>
-    </entry>
 
     <entry>
         <key>JRD_V2_AD_FORBED_TIME</key>
@@ -91,9 +128,5 @@
     </entry>
 
 
-    <entry>
-        <key>JRD_AD_COUNT</key>
-        <value>4</value>
-    </entry>
 
 </defaultsMap>

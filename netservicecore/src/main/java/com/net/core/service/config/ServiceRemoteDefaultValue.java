@@ -4,6 +4,8 @@ import android.content.Context;
 import android.util.Log;
 import android.util.Xml;
 
+import com.net.core.BuildConfig;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -21,6 +23,8 @@ import java.util.List;
  */
 public class ServiceRemoteDefaultValue {
 
+
+    private static final String TAG = "ServiceConfig";
     // We don't use namespaces
     private static final String ns = null;
 
@@ -45,6 +49,9 @@ public class ServiceRemoteDefaultValue {
     }
 
     protected List setDefaultValueFromFile(String fileName, int flag, Context context) throws XmlPullParserException, IOException {
+        if(BuildConfig.DEBUG){
+            Log.i(TAG,"start read default value from "+fileName);
+        }
         InputStream is = context.getAssets().open(fileName);
         return parse(is);
     }
@@ -62,6 +69,9 @@ public class ServiceRemoteDefaultValue {
     }
 
     private List readFeed(XmlPullParser parser) throws XmlPullParserException, IOException {
+        if(BuildConfig.DEBUG){
+            Log.i(TAG,"start read  default file readFeed");
+        }
         List entries = new ArrayList();
         parser.require(XmlPullParser.START_TAG, ns, "defaultsMap");
         while (parser.next() != XmlPullParser.END_TAG) {
@@ -75,6 +85,10 @@ public class ServiceRemoteDefaultValue {
             } else {
                 skip(parser);
             }
+        }
+
+        if(BuildConfig.DEBUG){
+            Log.i(TAG,"read default file finish  size is:\t"+entries.size());
         }
         return entries;
     }
