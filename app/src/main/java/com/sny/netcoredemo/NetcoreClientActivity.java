@@ -34,11 +34,12 @@ public class NetcoreClientActivity extends AppCompatActivity {
         mBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fetchRemoteValue();
+                fetchRemoteValue(null);
             }
         });
-
     }
+
+
 
     /**
      * 添加按钮
@@ -54,7 +55,7 @@ public class NetcoreClientActivity extends AppCompatActivity {
         } catch (IOException io) {
             io.printStackTrace();
         }
-        ServiceRemoteConfigInstance.getInstance(getApplicationContext()).getString("JRD_AD_COUNT");
+        ServiceRemoteConfigInstance.getInstance(getApplicationContext()).getString("hi_launcher_show_hot_game");
     }
 
     /**

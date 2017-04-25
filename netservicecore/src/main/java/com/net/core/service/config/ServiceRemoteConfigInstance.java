@@ -184,27 +184,28 @@ public class ServiceRemoteConfigInstance {
         }
 
         //优先服务器数据，如果没有使用默认数据
-        if(mServerValue != null){
+        if (mServerValue != null) {
             result = mServerValue.get(key);
 
-            if (BuildConfig.DEBUG) {
-                Log.i(TAG, "the key "+key+"of  value "+result+" is from server local !");
+            if (!TextUtils.isEmpty(result)) {
+                if (BuildConfig.DEBUG) {
+                    Log.i(TAG, "the key " + key + "of  value " + result + " is from server local !");
+                }
+                return result;
             }
-
-            return result;
-
-        }else{
-            result = mDefaultValue.get(key);
-
-            if(TextUtils.isEmpty(result)){
-                Log.i(TAG,"the key "+key+"has not initialized in file "+DEFAULT_FILENAME);
-            }
-
-            if (BuildConfig.DEBUG) {
-                Log.i(TAG, "the value is from default !");
-            }
-            return result;
         }
+
+        result = mDefaultValue.get(key);
+
+        if (TextUtils.isEmpty(result)) {
+            Log.i(TAG, "the key " + key + "has not initialized in file " + DEFAULT_FILENAME);
+        }
+
+        if (BuildConfig.DEBUG) {
+            Log.i(TAG,  "the key " + key + "of  value " + result + " is from default !");
+        }
+        return result;
+
 
     }
 
@@ -273,7 +274,7 @@ public class ServiceRemoteConfigInstance {
                 //处理数据 【解密以及获取 configuration 】
                 String value = resolveServerData(response);
                 //把服务器的数据存储到本地来 mem
-                Map<String,String>  values  =   storeJsonDataToLocal(value);
+                Map<String, String> values = storeJsonDataToLocal(value);
                 long currentTime = System.currentTimeMillis();
                 //存储获取时间
                 SPUtils.put(mContext, LAST_FETCHTIME_KEY, currentTime);
@@ -304,8 +305,8 @@ public class ServiceRemoteConfigInstance {
                 if (BuildConfig.DEBUG) {
                     Log.i(TAG, "fetch data failure!！" + BuildConfig.configuration);
                 }
-                if(callback != null){
-                    callback.onFailure(call,e);
+                if (callback != null) {
+                    callback.onFailure(call, e);
                 }
             }
 
@@ -317,14 +318,14 @@ public class ServiceRemoteConfigInstance {
                 //处理数据 【解密以及获取 configuration 】
                 String value = resolveServerData(response);
                 //把服务器的数据存储到本地来 mem
-                Map<String,String>  values  =   storeJsonDataToLocal(value);
+                Map<String, String> values = storeJsonDataToLocal(value);
                 long currentTime = System.currentTimeMillis();
                 //存储获取时间
                 SPUtils.put(mContext, LAST_FETCHTIME_KEY, currentTime);
                 mLastFetchTime = currentTime;
 
-                if(callback != null){
-                    callback.onResponse(call,values);
+                if (callback != null) {
+                    callback.onResponse(call, values);
                 }
             }
         });
@@ -450,7 +451,6 @@ public class ServiceRemoteConfigInstance {
         }
         return sb.toString();
     }
-
 
 
 }
