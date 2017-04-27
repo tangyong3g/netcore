@@ -1,8 +1,7 @@
 package com.sny.netcoredemo;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
@@ -76,8 +75,8 @@ public class NetcoreClientActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(Call call, Map<String, String> values) throws IOException {
+                //return values store by Map<String,String>
                 String rs = showRemoteValue(values);
-                Log.i("ServiceConfig", "结果是。 is :\t\n" + rs);
             }
         });
 

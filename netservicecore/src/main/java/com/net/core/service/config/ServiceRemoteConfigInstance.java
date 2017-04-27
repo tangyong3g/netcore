@@ -51,6 +51,30 @@ import okhttp3.Response;
  * <p>
  * ${@link ServiceRemoteConfigInstance#setCacheTime(long)}
  * <p>
+ * <p>
+ * 如果对数据的时效性要求比较高【一定要获取到当前服务器配置的数据】
+ * ${@link ServiceRemoteConfigInstance#fetchValue(com.net.core.service.config.Callback)}
+ * 那么数据结果会在CallBack回调接口中，以Map的形式得到
+ * <p>
+ * <p>
+ * <p>
+ * style looks like the following:
+ * <p><hr><blockquote><pre>
+ *     ServiceRemoteConfigInstance.getInstance(getApplicationContext()).fetchValue(new Callback() {
+ *              @Override
+ *               public void onFailure(Call call, IOException e) {
+ *               }
+ * <p>
+ *              @Override
+ *               public void onResponse(Call call, Map<String, String> values) throws IOException {
+ *                  //return values store by Map<String,String>
+ *                  String rs = showRemoteValue(values);
+ *               }
+ *            });
+ * <p>
+ * <p>
+ * </pre></blockquote><hr>
+ * <p>
  * </p>
  */
 public class ServiceRemoteConfigInstance {
@@ -67,8 +91,8 @@ public class ServiceRemoteConfigInstance {
     private static final String AES_KEY = "cqgf971sp394@!#0";
     //日志 Tag
     private static final String TAG = "ServiceConfig";
-    //数据缓存的时间 默认一个小时
-    private long mCacheTime = 3600 * 1000 * 24;
+    //数据缓存的时间 默认12个小时
+    private long mCacheTime = 3600 * 1000 * 12;
     //服务器接口URL
     private static final String CONFIGURATION_URL = BuildConfig.configuration;
     //本地数据是否超时
@@ -202,7 +226,7 @@ public class ServiceRemoteConfigInstance {
         }
 
         if (BuildConfig.DEBUG) {
-            Log.i(TAG,  "the key " + key + "of  value " + result + " is from default !");
+            Log.i(TAG, "the key " + key + "of  value " + result + " is from default !");
         }
         return result;
 
@@ -244,7 +268,7 @@ public class ServiceRemoteConfigInstance {
     }
 
     /**
-     * 获取所有服务器的配置数据
+     * 获取所有服务器的配置数据【非实时，会考虑数据缓存】
      */
     public void fetchValue() {
         if (BuildConfig.DEBUG) {
@@ -283,9 +307,10 @@ public class ServiceRemoteConfigInstance {
         });
     }
 
-
     /**
-     * 获取所有服务器的配置数据
+     * 獲取服务器数据，【实时，非缓存】
+     *
+     * @param callback 回调接口，返回服务器数据
      */
     public void fetchValue(final com.net.core.service.config.Callback callback) {
         if (BuildConfig.DEBUG) {
