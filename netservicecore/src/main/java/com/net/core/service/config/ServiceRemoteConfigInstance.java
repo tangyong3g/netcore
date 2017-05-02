@@ -20,6 +20,7 @@ import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -267,6 +268,7 @@ public class ServiceRemoteConfigInstance {
         return sb.toString();
     }
 
+
     /**
      * 获取所有服务器的配置数据【非实时，会考虑数据缓存】
      */
@@ -305,6 +307,69 @@ public class ServiceRemoteConfigInstance {
                 mLastFetchTime = currentTime;
             }
         });
+    }
+
+    /**
+     * TODO 这里函数冗余到 ServiceConfig里面来了，会重新的去构建。
+     *
+     * <p>
+     * 获取服务器数据，
+     *
+     * @param callback 回调函数
+     * @param url      请求URl
+     * @param params   参数的Key Map
+     */
+    public void fetchValueWithURL(final com.net.core.service.config.Callback callback, String url, Map<String, String> params) {
+
+        OkHttpClient client = new OkHttpClient();
+        //构建带参数的请求BODY
+        MultipartBody body = null;
+        MultipartBody.Builder multipartBodyBuilder = new MultipartBody.Builder();
+
+        if (params != null && params.size() > 0) {
+            for (String keyTemp : params.keySet()) {
+                String value = params.get(keyTemp);
+                multipartBodyBuilder.addPart(MultipartBody.Part.createFormData(keyTemp, value));
+            }
+        }
+        body = multipartBodyBuilder.build();
+
+        //参数和URL构成了 Request
+        Request.Builder builder = new Request.Builder().url(url);
+        Request request = builder.post(body).build();
+
+        //用Client创建Call，call 和Request形成请求
+        Call call = client.newCall(request);
+
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.i(TAG, "resolveServerConfig\t" + "onFailure");
+                if (callback != null) {
+                    callback.onFailure(call, e);
+                }
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+                String bodyStr = response.body().string();
+
+                if (callback != null) {
+                    try {
+                        bodyStr = AESUtil.decryptUncompress(bodyStr, AES_KEY, false);
+                        callback.onResponse(call, bodyStr);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    } finally {
+                        if (response != null && response.body() != null) {
+                            response.body().close();
+                        }
+                    }
+                }
+            }
+        });
+
     }
 
     /**
@@ -476,6 +541,5 @@ public class ServiceRemoteConfigInstance {
         }
         return sb.toString();
     }
-
 
 }
