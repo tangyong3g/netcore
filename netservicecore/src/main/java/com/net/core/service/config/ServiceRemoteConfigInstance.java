@@ -311,7 +311,7 @@ public class ServiceRemoteConfigInstance {
 
     /**
      * TODO 这里函数冗余到 ServiceConfig里面来了，会重新的去构建。
-     *
+     * <p>
      * <p>
      * 获取服务器数据，
      *
@@ -358,7 +358,12 @@ public class ServiceRemoteConfigInstance {
                 if (callback != null) {
                     try {
                         bodyStr = AESUtil.decryptUncompress(bodyStr, AES_KEY, false);
-                        callback.onResponse(call, bodyStr);
+                        if (BuildConfig.DEBUG) {
+                            //测试数据 用来调试使用
+                            callback.onResponse(call, RETURN_DATA);
+                        } else {
+                            callback.onResponse(call, bodyStr);
+                        }
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     } finally {
@@ -541,5 +546,24 @@ public class ServiceRemoteConfigInstance {
         }
         return sb.toString();
     }
+
+
+    private static final String RETURN_DATA = "{\n" +
+            "    \"status\": \"0\",\n" +
+            "    \"msg\": \"Success\",\n" +
+            "    \"data\": {\n" +
+            "         \"list\":[\n" +
+            "            {\n" +
+            "                \"id\":\"\", \n" +
+            "                \"icon\":\"http://tcl-icloudcdn.tclclouds.com/tlauncher/20161101/09/36/25/96a3fdf5624d4c5fbe81b12e0ce857f8.png\", \n" +
+            "                \"name\":\"\",\n" +
+            "                \"type\":\"H5\",\n" +
+            "                \"url\":\"http:...\",\n" +
+            "                \"time\":1481526650839\n" +
+            "            }\n" +
+            "         ]\n" +
+            "     }\n" +
+            "    \"compress\": 0\n" +
+            "}";
 
 }
