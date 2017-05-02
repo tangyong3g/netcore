@@ -333,14 +333,12 @@ public class ServiceRemoteConfigInstance {
             }
             body = multipartBodyBuilder.build();
         }
-
-
         Request request = null;
         //参数和URL构成了 Request
         Request.Builder builder = new Request.Builder().url(url);
-        if(body != null){
+        if (body != null) {
             request = builder.post(body).build();
-        }else{
+        } else {
             request = builder.build();
         }
 
@@ -359,9 +357,13 @@ public class ServiceRemoteConfigInstance {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
 
+                if (BuildConfig.DEBUG) {
+                    Log.i(TAG, "fetchValueWithURL:\t" + response.body().string());
+                    callback.onResponse(call, RETURN_DATA);
+                    return;
+                }
                 String bodyStr = response.body().string();
-
-                if (callback != null) {
+                if (callback != null && !TextUtils.isEmpty(bodyStr)) {
                     try {
                         bodyStr = AESUtil.decryptUncompress(bodyStr, AES_KEY, false);
                         if (BuildConfig.DEBUG) {
@@ -389,13 +391,14 @@ public class ServiceRemoteConfigInstance {
      * @param callback 回调接口，返回服务器数据
      */
     public void fetchValue(final com.net.core.service.config.Callback callback) {
+        final String url = BuildConfig.configuration;
         if (BuildConfig.DEBUG) {
             Log.i(TAG, "url is " + BuildConfig.configuration);
         }
         //创建OkHttpClient对象
         OkHttpClient okHttpClient = new OkHttpClient();
         //创建Request 跟据URL  Request的Build可以创建Request对象
-        final Request request = new Request.Builder().url(BuildConfig.configuration).build();
+        final Request request = new Request.Builder().url(url).build();
         //创建Call 对象，实际是上执行任务
         Call call = okHttpClient.newCall(request);
 
@@ -404,7 +407,7 @@ public class ServiceRemoteConfigInstance {
             @Override
             public void onFailure(Call call, IOException e) {
                 if (BuildConfig.DEBUG) {
-                    Log.i(TAG, "fetch data failure!！" + BuildConfig.configuration);
+                    Log.i(TAG, "fetch data failure!！" + url);
                 }
                 if (callback != null) {
                     callback.onFailure(call, e);

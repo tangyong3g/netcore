@@ -30,6 +30,8 @@ public class NetcoreClientActivity extends AppCompatActivity {
 
     private void initComponent() {
 
+        final String url = "http://launcher-test.tclclouds.com/tlauncher-api/api/advertising/list";
+
         mBtn = (Button) findViewById(R.id.btn_fetch);
         mBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,7 +59,9 @@ public class NetcoreClientActivity extends AppCompatActivity {
                     public void onResponse(Call call, String result) throws IOException {
                         Log.i("tyler.tang", "result;\t" + result);
                     }
-                }, null, null);
+                }, url, null);
+
+
             }
         });
     }
@@ -78,56 +82,6 @@ public class NetcoreClientActivity extends AppCompatActivity {
             io.printStackTrace();
         }
         ServiceRemoteConfigInstance.getInstance(getApplicationContext()).getString("hi_launcher_show_hot_game");
-    }
-
-    /**
-     * 添加按钮
-     */
-    public void fetchRemoteValue() {
-        try {
-            ServiceRemoteConfigInstance.getInstance(getApplicationContext()).setDefaultValue("default_value.xml");
-        } catch (XmlPullParserException xmlEx) {
-            xmlEx.printStackTrace();
-        } catch (IOException io) {
-            io.printStackTrace();
-        }
-        ServiceRemoteConfigInstance.getInstance(getApplicationContext()).fetchValue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-            }
-
-            @Override
-            public void onResponse(Call call, Map<String, String> values) throws IOException {
-                //return values store by Map<String,String>
-                String rs = showRemoteValue(values);
-            }
-
-            @Override
-            public void onResponse(Call call, String result) throws IOException {
-                
-            }
-        });
-
-    }
-
-
-    /**
-     * 查看从服务器fetch下来的内容，是否正常 调试用
-     *
-     * @return
-     */
-    private String showRemoteValue(Map<String, String> mServerValue) {
-        StringBuffer sb = new StringBuffer("");
-
-        if (mServerValue != null && mServerValue.size() > 0) {
-            for (String keyTemp : mServerValue.keySet()) {
-                sb.append(keyTemp);
-                sb.append(":\t");
-                sb.append(mServerValue.get(keyTemp));
-                sb.append("\n");
-            }
-        }
-        return sb.toString();
     }
 
 
