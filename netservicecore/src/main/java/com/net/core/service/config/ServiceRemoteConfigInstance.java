@@ -331,12 +331,18 @@ public class ServiceRemoteConfigInstance {
                 String value = params.get(keyTemp);
                 multipartBodyBuilder.addPart(MultipartBody.Part.createFormData(keyTemp, value));
             }
+            body = multipartBodyBuilder.build();
         }
-        body = multipartBodyBuilder.build();
 
+
+        Request request = null;
         //参数和URL构成了 Request
         Request.Builder builder = new Request.Builder().url(url);
-        Request request = builder.post(body).build();
+        if(body != null){
+            request = builder.post(body).build();
+        }else{
+            request = builder.build();
+        }
 
         //用Client创建Call，call 和Request形成请求
         Call call = client.newCall(request);

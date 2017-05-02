@@ -2,6 +2,7 @@ package com.sny.netcoredemo;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -36,8 +37,30 @@ public class NetcoreClientActivity extends AppCompatActivity {
                 fetchRemoteValue(null);
             }
         });
-    }
 
+
+        Button btn = (Button) findViewById(R.id.btn_fetch_ads);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                ServiceRemoteConfigInstance.getInstance(getApplicationContext()).fetchValueWithURL(new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Map<String, String> values) throws IOException {
+                    }
+
+                    @Override
+                    public void onResponse(Call call, String result) throws IOException {
+                        Log.i("tyler.tang", "result;\t" + result);
+                    }
+                }, null, null);
+            }
+        });
+    }
 
 
     /**
@@ -78,6 +101,11 @@ public class NetcoreClientActivity extends AppCompatActivity {
                 //return values store by Map<String,String>
                 String rs = showRemoteValue(values);
             }
+
+            @Override
+            public void onResponse(Call call, String result) throws IOException {
+                
+            }
         });
 
     }
@@ -101,5 +129,6 @@ public class NetcoreClientActivity extends AppCompatActivity {
         }
         return sb.toString();
     }
+
 
 }
