@@ -557,22 +557,21 @@ public class ServiceRemoteConfigInstance {
     }
 
 
-    private static final String RETURN_DATA = "{\n" +
+    private static final String RETURN_DATA = "\n" +
+            "{\n" +
             "    \"status\": \"0\",\n" +
             "    \"msg\": \"Success\",\n" +
             "    \"data\": {\n" +
-            "         \"list\":[\n" +
+            "        \"list\": [\n" +
             "            {\n" +
-            "                \"id\":\"\", \n" +
-            "                \"icon\":\"http://tcl-icloudcdn.tclclouds.com/tlauncher/20161101/09/36/25/96a3fdf5624d4c5fbe81b12e0ce857f8.png\", \n" +
-            "                \"name\":\"\",\n" +
-            "                \"type\":\"H5\",\n" +
-            "                \"url\":\"http:...\",\n" +
-            "                \"time\":1481526650839\n" +
+            "                \"id\": \"id-1\",\n" +
+            "                \"icon\": \"http://tcl-icloudcdn.tclclouds.com/tlauncher/20161101/09/36/25/96a3fdf5624d4c5fbe81b12e0ce857f8.png\",\n" +
+            "                \"url\": \"http:...\",\n" +
+            "                \"timestamp\": 1481526650839\n" +
             "            }\n" +
-            "         ]\n" +
-            "     }\n" +
+            "        ]\n" +
+            "    },\n" +
             "    \"compress\": 0\n" +
-            "}";
+            "}\n";
 
 }
