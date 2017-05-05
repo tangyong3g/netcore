@@ -480,25 +480,4 @@ public class ServiceRemoteConfigInstance {
         return sb.toString();
     }
 
-<<<<<<< aafe49611f845909e5c52d11a60383c8be9670a6
-    private static final String RETURN_DATA = "{\n" +
-            "    \"status\": \"0\",\n" +
-            "    \"msg\": \"Success\",\n" +
-            "    \"data\": {\n" +
-            "        \"list\": [\n" +
-            "            {\n" +
-            "                \"id\": \"id-1\",\n" +
-            "                 \"name\":\"hi Launcher\",\n" +
-            "                 \"packageName\":\"com.tcl.launcherpro\",\n" +
-            "                \"icon\": \"http://tcl-icloudcdn.tclclouds.com/tlauncher/20161101/09/36/25/96a3fdf5624d4c5fbe81b12e0ce857f8.png\",\n" +
-            "                \"url\": \"http:...\",\n" +
-            "                \"timestamp\": 1481526650839\n" +
-            "            }\n" +
-            "        ]\n" +
-            "    },\n" +
-            "    \"compress\": 0\n" +
-            "}\n";
-=======
->>>>>>> f78fc7ac10bf62212a97daa5844627a105192ed5
-
 }
