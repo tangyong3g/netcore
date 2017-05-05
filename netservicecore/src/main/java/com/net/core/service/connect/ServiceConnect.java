@@ -78,12 +78,13 @@ public class ServiceConnect {
                 String bodyStr = response.body().string();
                 if (callback != null && !TextUtils.isEmpty(bodyStr)) {
                     try {
-                        if (BuildConfig.DEBUG) {
+                        callback.onResponse(call, bodyStr);
+                       /* if (BuildConfig.DEBUG) {
                             //测试数据 用来调试使用
                             callback.onResponse(call, RETURN_DATA);
                         } else {
                             callback.onResponse(call, bodyStr);
-                        }
+                        }*/
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     } finally {
