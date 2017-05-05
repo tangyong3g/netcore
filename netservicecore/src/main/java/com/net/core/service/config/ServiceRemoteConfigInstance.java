@@ -564,7 +564,7 @@ public class ServiceRemoteConfigInstance {
             "            {\n" +
             "                \"id\": \"id-1\",\n" +
             "                 \"name\":\"hi Launcher\",\n" +
-            "                 \"packageName\",\"com.tcl.launcherpro\",\n" +
+            "                 \"packageName\":\"com.tcl.launcherpro\",\n" +
             "                \"icon\": \"http://tcl-icloudcdn.tclclouds.com/tlauncher/20161101/09/36/25/96a3fdf5624d4c5fbe81b12e0ce857f8.png\",\n" +
             "                \"url\": \"http:...\",\n" +
             "                \"timestamp\": 1481526650839\n" +
