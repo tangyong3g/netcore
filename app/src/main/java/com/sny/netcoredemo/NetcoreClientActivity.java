@@ -6,12 +6,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.net.core.service.config.Callback;
 import com.net.core.service.config.ServiceRemoteConfigInstance;
+import com.net.core.service.connect.ServiceConnect;
 
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 import okhttp3.Call;
@@ -30,7 +31,7 @@ public class NetcoreClientActivity extends AppCompatActivity {
 
     private void initComponent() {
 
-        final String url = "http://launcher-test.tclclouds.com/tlauncher-api/api/advertising/list";
+        final String url = "http://launcher-test.tclclouds.com/tlauncher-api/advertising/list";
 
         mBtn = (Button) findViewById(R.id.btn_fetch);
         mBtn.setOnClickListener(new View.OnClickListener() {
@@ -41,27 +42,27 @@ public class NetcoreClientActivity extends AppCompatActivity {
         });
 
 
+        final Map<String, String> params = new HashMap<String, String>();
+        params.put("inner_package_name", "com.tcl.launcherpro");
+        params.put("posision", "1");
+        params.put("num", "4");
+
         Button btn = (Button) findViewById(R.id.btn_fetch_ads);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                ServiceRemoteConfigInstance.getInstance(getApplicationContext()).fetchValueWithURL(new Callback() {
+                ServiceConnect connect = new ServiceConnect();
+                connect.fetchValueWithURL(new ServiceConnect.Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
-                    }
 
-                    @Override
-                    public void onResponse(Call call, Map<String, String> values) throws IOException {
                     }
 
                     @Override
                     public void onResponse(Call call, String result) throws IOException {
-                        Log.i("tyler.tang", "result;\t" + result);
+                        Log.i("tyler.tang", "获取到的数据:\t" + result);
                     }
-                }, url, null);
-
-
+                }, url, params);
             }
         });
     }

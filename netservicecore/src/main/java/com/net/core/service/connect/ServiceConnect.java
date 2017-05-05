@@ -76,15 +76,10 @@ public class ServiceConnect {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String bodyStr = response.body().string();
+                Log.i(TAG, "返回的数据是:\t" + bodyStr);
                 if (callback != null && !TextUtils.isEmpty(bodyStr)) {
                     try {
                         callback.onResponse(call, bodyStr);
-                       /* if (BuildConfig.DEBUG) {
-                            //测试数据 用来调试使用
-                            callback.onResponse(call, RETURN_DATA);
-                        } else {
-                            callback.onResponse(call, bodyStr);
-                        }*/
                     } catch (Exception ex) {
                         ex.printStackTrace();
                     } finally {
