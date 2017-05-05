@@ -2,7 +2,15 @@ package com.net.core.unit;
 
 import android.text.TextUtils;
 
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
@@ -65,7 +73,8 @@ public class AESUtil {
      * @return
      * @throws Exception
      */
-    public static byte[] decrypt2(byte[] encrypted, String key) throws Exception {
+    public static byte[] decrypt2(byte[] encrypted, String key) {
+        byte[] original = null;
         if (encrypted == null || encrypted.length == 0) return null;
         try {
             Cipher cipher = Cipher.getInstance(ALGORITHM);
@@ -75,13 +84,25 @@ public class AESUtil {
             IvParameterSpec ivspec = new IvParameterSpec(IV.getBytes("utf-8"));
 
             cipher.init(Cipher.DECRYPT_MODE, keyspec, ivspec);
+            original = cipher.doFinal(encrypted);
 
-            byte[] original = cipher.doFinal(encrypted);
             return original;
-        } catch (Exception e) {
+        } catch (NoSuchPaddingException e) {
             e.printStackTrace();
-            return null;
+        } catch (NoSuchAlgorithmException al) {
+            al.printStackTrace();
+        } catch (UnsupportedEncodingException ue) {
+            ue.printStackTrace();
+        } catch (InvalidAlgorithmParameterException ine) {
+            ine.printStackTrace();
+        } catch (InvalidKeyException inek) {
+            inek.printStackTrace();
+        } catch (BadPaddingException badE) {
+            badE.printStackTrace();
+        } catch (IllegalBlockSizeException il) {
+            il.printStackTrace();
         }
+        return original;
     }
 
     /**

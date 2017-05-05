@@ -21,6 +21,9 @@ import java.util.Map;
 import okhttp3.Call;
 
 
+/**
+ * Service.cofig 回调接口
+ */
 public interface Callback {
     /**
      * Called when the request could not be executed due to cancellation, a connectivity problem or
@@ -34,17 +37,9 @@ public interface Callback {
      * proceed to read the response body with {@link Response#body}. The response is still live until
      * its response body is closed with {@code response.body().close()}. The recipient of the callback
      * may even consume the response body on another thread.
+     *
+     * @param values 回调的配置结果，以 key,value形式返回
      */
     void onResponse(Call call, Map<String, String> values) throws IOException;
 
-
-    /**
-     * Called when the HTTP response was successfully returned by the remote server. The callback may
-     * proceed to read the response body with {@link Response#body}. The response is still live until
-     * its response body is closed with {@code response.body().close()}. The recipient of the callback
-     * may even consume the response body on another thread.
-     * <p>
-     * result 为响应后的结果，以String形式返回
-     */
-    void onResponse(Call call, String result) throws IOException;
 }
