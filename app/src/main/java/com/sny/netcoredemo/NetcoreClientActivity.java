@@ -53,7 +53,7 @@ public class NetcoreClientActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    ServiceConnect.getInstance().fetchValueWithURLWithCa(new ServiceConnect.Callback() {
+                    ServiceConnect.getInstance(NetcoreClientActivity.this).fetchValueWithURLWithCa(new ServiceConnect.Callback() {
                         @Override
                         public void onFailure(Call call, IOException e) {
                         }
