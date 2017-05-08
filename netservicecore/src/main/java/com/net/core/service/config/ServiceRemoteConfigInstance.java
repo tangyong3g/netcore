@@ -271,7 +271,8 @@ public class ServiceRemoteConfigInstance {
     /**
      * 获取所有服务器的配置数据【非实时，会考虑数据缓存】
      */
-    public void fetchValue() {
+    public void
+    fetchValue() {
         if (BuildConfig.DEBUG) {
             Log.i(TAG, "url is " + BuildConfig.configuration);
         }

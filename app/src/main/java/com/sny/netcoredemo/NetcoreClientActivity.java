@@ -8,6 +8,7 @@ import android.widget.Button;
 
 import com.net.core.service.config.ServiceRemoteConfigInstance;
 import com.net.core.service.connect.ServiceConnect;
+import com.net.core.service.connect.ServiceConnectException;
 
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -51,18 +52,23 @@ public class NetcoreClientActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ServiceConnect connect = new ServiceConnect();
-                connect.fetchValueWithURL(new ServiceConnect.Callback() {
-                    @Override
-                    public void onFailure(Call call, IOException e) {
+                try {
+                    ServiceConnect.getInstance().fetchValueWithURLWithCa(new ServiceConnect.Callback() {
+                        @Override
+                        public void onFailure(Call call, IOException e) {
+                        }
 
-                    }
+                        @Override
+                        public void onResponse(Call call, String result) throws IOException {
+                            Log.i("tyler.tang", "获取到的数据:\t" + result);
+                        }
+                    }, url, params, 3600 * 1000 * 24);
 
-                    @Override
-                    public void onResponse(Call call, String result) throws IOException {
-                        Log.i("tyler.tang", "获取到的数据:\t" + result);
-                    }
-                }, url, params);
+                } catch (ServiceConnectException ex) {
+
+                } catch (IOException io) {
+
+                }
             }
         });
     }
