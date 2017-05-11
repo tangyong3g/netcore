@@ -273,6 +273,7 @@ public class ServiceRemoteConfigInstance {
      */
     public void
     fetchValue() {
+        Log.d("wxj", "fetchValue: "+BuildConfig.configuration);
         if (BuildConfig.DEBUG) {
             Log.i(TAG, "url is " + BuildConfig.configuration);
         }
