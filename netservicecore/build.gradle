@@ -16,7 +16,7 @@ android {
 
         debug {
             debuggable true
-            buildConfigField("String", "configuration", "\"https://tlauncher-api.tclclouds.com/tlauncher-api/api/kvp\"")
+            buildConfigField("String", "configuration", "\"http://launcher-test.tclclouds.com/tlauncher-api/api/kvp\"")
         }
 
         release {

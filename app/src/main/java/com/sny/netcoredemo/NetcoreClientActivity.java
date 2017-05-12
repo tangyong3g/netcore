@@ -7,12 +7,15 @@ import android.view.View;
 import android.widget.Button;
 
 import com.net.core.service.config.ServiceRemoteConfigInstance;
-import com.net.core.service.connect.ServiceConnect;
+import com.net.core.service.connect.Callback;
+import com.net.core.service.connect.ServiceConnectConfig;
 import com.net.core.service.connect.ServiceConnectException;
+import com.net.core.service.connect.ServiceConnectInstance;
 
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,16 +47,21 @@ public class NetcoreClientActivity extends AppCompatActivity {
 
 
         final Map<String, String> params = new HashMap<String, String>();
+
+
         params.put("inner_package_name", "com.tcl.launcherpro");
         params.put("posision", "1");
         params.put("num", "4");
+        params.put("country", "all_cou");
+        params.put("version", "all_ver");
+        params.put("language", "all_lan");
 
         Button btn = (Button) findViewById(R.id.btn_fetch_ads);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-                    ServiceConnect.getInstance(NetcoreClientActivity.this).fetchValueWithURLWithCa(new ServiceConnect.Callback() {
+                    ServiceConnectInstance.getInstance(NetcoreClientActivity.this).fetchValueWithURLWithCa(new Callback() {
                         @Override
                         public void onFailure(Call call, IOException e) {
                         }
@@ -71,6 +79,18 @@ public class NetcoreClientActivity extends AppCompatActivity {
                 }
             }
         });
+
+
+        findViewById(R.id.btn_un_ser).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+//                ArrayList<ServiceConnectConfig> config = ServiceConnectInstance.getInstance(NetcoreClientActivity.this).readObj();
+//                Log.i("tyler.tang", config.toString());
+
+            }
+        });
+
     }
 
 

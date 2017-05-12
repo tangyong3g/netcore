@@ -5,9 +5,13 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.net.core.BuildConfig;
-import com.net.core.unit.SPUtils;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -21,45 +25,55 @@ import okhttp3.Response;
 /**
  * Created by tyler.tang on 2017/5/5.
  * <p>
+ * <p>
  * 以OkHttp为基础进入网络请求，结果以回调的形式返回
  * <p>
- * * 1 : ${@link ServiceConnect#fetchValueWithURL(Callback, String, Map)}
+ * * 1 : ${@link ServiceConnectInstance#fetchValueWithURL(Callback, String, Map)}
+ * <p>
+ * 以OkHttp为基础进入网络请求，结果以CallBack形式返回，同学会缓存在本地。
+ * ${@link ServiceConnectInstance#fetchValueWithURLWithCa(Callback, String, Map, long)}
  * <p>
  * <p>
  * <p>
- * TODO fetchTime没有处理好，这里对像需要序列化和反序列化.
  */
-public class ServiceConnect {
+public class ServiceConnectInstance {
 
     //volatile防止编译器修改指令次序
-    private volatile static ServiceConnect singleton;
+    private volatile static ServiceConnectInstance singleton;
     // TAG
     private static final String TAG = "ServiceConnect";
     //缓存服务器请求数据,同时封装了请求信息
-    private List<ServiceConnectConfig> mCacheFetchData = null;
+    private ArrayList<ServiceConnectConfig> mCacheFetchData = null;
     //上下文
     private Context mContext;
-
+    //序列化文件名
+    private static final String serilizableFile = "serviceConnect.ca";
 
     //私有构造函数
-    private ServiceConnect(Context context) {
-        if (mCacheFetchData == null) {
-            mCacheFetchData = new ArrayList<ServiceConnectConfig>();
-        }
+    private ServiceConnectInstance(Context context) {
+
         //全局上下文，以防应用拿住Activity引用，导致内存泄露
         if (context != null) {
             mContext = context.getApplicationContext();
         }
+
+        //从序列化文件中读出信息
+        mCacheFetchData = readObj();
+
+        if (mCacheFetchData == null) {
+            mCacheFetchData = new ArrayList<ServiceConnectConfig>();
+        }
+
     }
 
     /**
-     * @return
+     * @return 获取单例
      */
-    public static ServiceConnect getInstance(Context context) {
+    public static ServiceConnectInstance getInstance(Context context) {
         if (singleton == null) {
-            synchronized (ServiceConnect.class) {
+            synchronized (ServiceConnectInstance.class) {
                 if (singleton == null) {
-                    singleton = new ServiceConnect(context);
+                    singleton = new ServiceConnectInstance(context);
                 }
             }
         }
@@ -68,8 +82,7 @@ public class ServiceConnect {
 
 
     /**
-     *
-     * 获取服务器数据，会处理缓存逻辑
+     * 获取服务器数据，并且会处理缓存逻辑
      *
      * @param callback 回调函数
      * @param url      请求URl
@@ -77,21 +90,38 @@ public class ServiceConnect {
      */
     public void fetchValueWithURLWithCa(final Callback callback, String url, Map<String, String> params, long cacheTime) throws IOException, ServiceConnectException {
 
+        //获取是否有本地数据
         ServiceConnectConfig config = getConnectConfigFromCache(url);
 
         if (config != null) {
-            config.fetchValueWithURLSingle(callback, url, params, cacheTime);
+            config.fetchValueWithURLSingle(callback, url, params, cacheTime, mContext);
         } else {
             ServiceConnectConfig configCp = new ServiceConnectConfig(url, cacheTime);
-            configCp.fetchValueWithURLSingle(callback, url, params, cacheTime);
+            configCp.fetchValueWithURLSingle(callback, url, params, cacheTime, mContext);
 
             mCacheFetchData.add(configCp);
+            asnySerilizable(configCp);
         }
 
         if (BuildConfig.DEBUG) {
             showCacheState();
         }
+    }
 
+    /**
+     * 异步处理序列化信息
+     */
+    private void asnySerilizable(final ServiceConnectConfig config) {
+
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                writeObj(config);
+            }
+        };
+
+        thread.start();
     }
 
 
@@ -171,7 +201,7 @@ public class ServiceConnect {
      * @param url      请求URl
      * @param params   参数的Key Map
      */
-    public void fetchValueWithURL(final Callback callback, String url, Map<String, String> params) {
+    private void fetchValueWithURL(final Callback callback, String url, Map<String, String> params) {
 
         OkHttpClient client = new OkHttpClient();
         //构建带参数的请求BODY
@@ -223,151 +253,6 @@ public class ServiceConnect {
                 }
             }
         });
-    }
-
-
-    /**
-     * 回调接口
-     * <p>
-     * 请求数据会在onRespose里面参数
-     */
-    public interface Callback {
-        /**
-         * Called when the request could not be executed due to cancellation, a connectivity problem or
-         * timeout. Because networks can fail during an exchange, it is possible that the remote server
-         * accepted the request before the failure.
-         */
-        void onFailure(Call call, IOException e);
-
-
-        /**
-         * Called when the HTTP response was successfully returned by the remote server. The callback may
-         * proceed to read the response body with {@link Response#body}. The response is still live until
-         * its response body is closed with {@code response.body().close()}. The recipient of the callback
-         * may even consume the response body on another thread.
-         * <p>
-         * result 为响应后的结果，以String形式返回
-         */
-        void onResponse(Call call, String result) throws IOException;
-    }
-
-
-    /**
-     * 服务器请求配置信息
-     * <p>
-     * 整个应用对于每一个server请求有需要的会生成有仅一个 Config对像存储在，url和请求是1-1的关系。
-     * ${@link ServiceConnect mCacheFetchData 中
-     * </p>
-     */
-    class ServiceConnectConfig implements Callback {
-
-        //请求连接
-        private String url;
-        //对当前请求设置的缓存时间 单位 毫秒
-        private long cacheTime = 24 * 3600 * 1000;
-        //上一次从服务器fetch的时间。
-        private long mLastFetchTime;
-        //服务器响应数据
-        private String responseData;
-
-        public ServiceConnectConfig(String url, long cacheTime) {
-            this.url = url;
-            this.cacheTime = cacheTime;
-        }
-
-        public void fetchValueWithURLSingle(final Callback callback, String url, Map<String, String> params, long cacheTime) throws ServiceConnectException, IOException {
-            this.cacheTime = cacheTime;
-
-            // 没有超时，本地数据
-            if (!isTimeOut()) {
-                if (callback == null) {
-                    throw new ServiceConnectException("callback is null");
-                }
-                if (BuildConfig.DEBUG) {
-                    Log.i(TAG, "get data from cache!");
-                }
-                callback.onResponse(null, responseData);
-                return;
-            }
-            //超时重新获取数据
-            else {
-                ArrayList<Callback> callbacks = new ArrayList<>();
-                callbacks.add(this);
-                callbacks.add(callback);
-
-                fetchValueWithURL(callbacks, url, params);
-            }
-        }
-
-
-        /**
-         * 判断数据是否超时
-         *
-         * @return boolean
-         */
-        private boolean isTimeOut() {
-
-            boolean result = false;
-
-            //没有初始化，在软件生命周期还没有fetch,所以不存在超时的概念。
-            if (mLastFetchTime == 0) {
-                return true;
-            }
-            result = (System.currentTimeMillis() - mLastFetchTime) > cacheTime;
-
-            if (BuildConfig.DEBUG) {
-                Log.i(TAG, "locadata is time out :\t" + result);
-            }
-
-            //TODO 这里加上标准的时间会更好
-            if (BuildConfig.DEBUG) {
-                Log.i(TAG, "url is :\t" + url + "\t" + "  it is time out :\t" + result);
-            }
-            return result;
-        }
-
-        @Override
-        public void onFailure(Call call, IOException e) {
-
-        }
-
-        @Override
-        public void onResponse(Call call, String result) throws IOException {
-            //TODO 这里有一个风格，数据格式的校验
-            if (!TextUtils.isEmpty(result)) {
-                this.responseData = result;
-                this.mLastFetchTime = System.currentTimeMillis();
-
-                //支持化获取时间    获取时间需要初始化
-                SPUtils.put(mContext, url, mLastFetchTime);
-            }
-        }
-
-        /**
-         * @return
-         */
-        public String toString() {
-            StringBuffer sb = new StringBuffer();
-
-            sb.append("{");
-            sb.append("url:");
-            sb.append(url);
-            sb.append(",");
-            sb.append("\t");
-
-            sb.append("cacheTime:");
-            sb.append(cacheTime);
-            sb.append(",");
-            sb.append("\t");
-
-            sb.append("mLastFetchTime:");
-            sb.append(mLastFetchTime);
-            sb.append(",");
-            sb.append("\t");
-            sb.append("}");
-            return sb.toString();
-        }
-
     }
 
 
@@ -460,6 +345,9 @@ public class ServiceConnect {
             "}\n";
 
 
+    /**
+     * 显示cache内容状态
+     */
     private void showCacheState() {
 
         if (mCacheFetchData != null && mCacheFetchData.size() > 0) {
@@ -472,5 +360,101 @@ public class ServiceConnect {
         }
     }
 
+
+    /**
+     * 序列化对象，整个List序列化
+     *
+     * @param config
+     */
+    private void writeObj(ServiceConnectConfig config) {
+
+        FileOutputStream fos = null;
+        ObjectOutputStream oos = null;
+        try {
+
+            File file = getInternalStorageFile();
+
+            fos = new FileOutputStream(file);
+            oos = new ObjectOutputStream(fos);
+            oos.writeObject(mCacheFetchData);
+
+            Log.i(TAG, "serilizable success");
+        } catch (IOException ioEx) {
+            ioEx.printStackTrace();
+
+        } finally {
+            try {
+                oos.flush();
+                oos.close();
+                fos.close();
+            } catch (IOException io) {
+                io.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * 读取序列化文件
+     *
+     * @return ArrayList<ServiceConnectConfig>
+     */
+    private ArrayList<ServiceConnectConfig> readObj() {
+
+        File file = getInternalStorageFile();
+        FileInputStream fis = null;
+        ObjectInputStream ois = null;
+        ArrayList<ServiceConnectConfig> configList = null;
+        try {
+
+            //对象反序列化过程
+            fis = new FileInputStream(file);
+            ois = new ObjectInputStream(fis);
+
+            configList = (ArrayList<ServiceConnectConfig>) ois.readObject();
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } catch (ClassNotFoundException ca) {
+            ca.printStackTrace();
+        } catch (Exception eofEx) {
+            eofEx.printStackTrace();
+        } finally {
+            try {
+                ois.close();
+                fis.close();
+            } catch (IOException exi) {
+                exi.printStackTrace();
+            } catch (NullPointerException nullEx) {
+                nullEx.printStackTrace();
+            }
+        }
+        return configList;
+    }
+
+
+    /**
+     * 创建存储序列化文件
+     *
+     * @param
+     */
+    private File getInternalStorageFile() {
+
+        File folder = mContext.getFilesDir();
+        File file = new File(folder.getAbsolutePath() + File.separator + serilizableFile);
+
+        boolean success = false;
+        if (!file.exists()) {
+            try {
+                success = file.createNewFile();
+            } catch (IOException io) {
+                io.printStackTrace();
+            }
+        }
+        if (success) {
+            Log.i(TAG, file.getAbsolutePath() + "create success!");
+        }
+
+        return file;
+    }
 
 }
