@@ -11,25 +11,34 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.sny.netcoredemo.NetcoreClientActivity">
 
+    <TextView
+        android:id="@+id/tx_fetch_key"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/btn_fetch_key"
+        android:text="display" />
+
     <EditText
         android:id="@+id/editText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/btn_fetch_key"
-        android:layout_toRightOf="@+id/btn_fetch_key"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Key" />
 
     <Button
-        android:id="@+id/btn_fdetch_key"
+        android:id="@+id/btn_fetch_key"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Fetch_Key"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:text="Fetch_Key" />
 
 
 </RelativeLayout>

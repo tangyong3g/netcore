@@ -201,7 +201,7 @@ public class ServiceConnectInstance {
      * @param url      请求URl
      * @param params   参数的Key Map
      */
-    private void fetchValueWithURL(final Callback callback, String url, Map<String, String> params) {
+    public void fetchValueWithURL(final Callback callback, String url, Map<String, String> params) {
 
         OkHttpClient client = new OkHttpClient();
         //构建带参数的请求BODY

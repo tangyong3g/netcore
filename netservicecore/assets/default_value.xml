@@ -4,7 +4,6 @@
 
     <!-- note 本质上只有可能是Hi Launcher数据，但是现在数据是混在一个接口里面所以 配置的默认数据涵盖了接口里面的所有数据-->
 
-
     <entry>
         <key>hi_launcher_show_hot_game</key>
         <value>1</value>
