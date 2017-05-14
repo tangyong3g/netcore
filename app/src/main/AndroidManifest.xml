@@ -18,7 +18,8 @@
         <activity android:name=".ServiceConfig" />
         <activity
             android:name=".ServiceConnect"
-            android:label="@string/title_activity_service_connect"></activity>
+            android:label="@string/title_activity_service_connect" />
+        <activity android:name=".connect.AdvertisementActivity"></activity>
     </application>
 
 </manifest>

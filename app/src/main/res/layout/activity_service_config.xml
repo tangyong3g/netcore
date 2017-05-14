@@ -20,17 +20,6 @@
         android:layout_below="@+id/btn_fetch_key"
         android:text="display" />
 
-    <EditText
-        android:id="@+id/editText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Key" />
-
     <Button
         android:id="@+id/btn_fetch_key"
         android:layout_width="wrap_content"
@@ -39,6 +28,29 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:text="Fetch_Key" />
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar2"
+        android:layout_below="@+id/tx_fetch_key"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Key"
+        android:layout_alignBaseline="@+id/btn_fetch_key"
+        android:layout_alignBottom="@+id/btn_fetch_key"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 
 </RelativeLayout>
