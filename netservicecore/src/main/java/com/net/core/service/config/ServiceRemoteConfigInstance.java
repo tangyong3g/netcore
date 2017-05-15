@@ -190,7 +190,6 @@ public class ServiceRemoteConfigInstance {
     /**
      * 根据Key值获取对应的值
      * <p>
-     * TODO 实时性的问题还需要解决 ,这样设计有缺陷，第一次使用的是服务器上一次值 ，那么到下一次才能够有得到
      *
      * @param key
      * @return
@@ -271,9 +270,8 @@ public class ServiceRemoteConfigInstance {
     /**
      * 获取所有服务器的配置数据【非实时，会考虑数据缓存】
      */
-    public void
-    fetchValue() {
-        Log.d("wxj", "fetchValue: "+BuildConfig.configuration);
+    public void fetchValue() {
+        Log.d("wxj", "fetchValue: " + BuildConfig.configuration);
         if (BuildConfig.DEBUG) {
             Log.i(TAG, "url is " + BuildConfig.configuration);
         }

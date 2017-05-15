@@ -23,11 +23,16 @@ public class ServiceConfig extends Activity {
     TextView mTx;
     EditText mETx;
 
+    Button mBtnFetchAll;
+    TextView mTxCaRs;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_service_config);
         initComponent();
+        //加载配置数据
+        fetchAllCconfig();
     }
 
 
@@ -37,7 +42,6 @@ public class ServiceConfig extends Activity {
         instance.getInstance(getApplicationContext()).fetchValue(new com.net.core.service.config.Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-
             }
 
             @Override
@@ -75,8 +79,6 @@ public class ServiceConfig extends Activity {
 
     private void initComponent() {
 
-        final String url = "http://launcher-test.tclclouds.com/tlauncher-api/advertising/list";
-
         mBtn = (Button) findViewById(R.id.btn_fetch_key);
         mBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,6 +98,37 @@ public class ServiceConfig extends Activity {
             }
         });
 
+        mTxCaRs = (TextView) findViewById(R.id.tx_ca_rs);
+        mBtnFetchAll = (Button) findViewById(R.id.btn_fetch_all);
+        mBtnFetchAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fetchRemoteValueFromCa();
+            }
+        });
+
+    }
+
+
+    private void fetchRemoteValueFromCa() {
+
+        String key = mETx.getText().toString();
+        String value = ServiceRemoteConfigInstance.getInstance(getApplicationContext()).getString(key);
+
+        StringBuffer sb = new StringBuffer("");
+
+        sb.append("the key is :\t" + key);
+        sb.append("\t");
+        sb.append("value is:\t" + value);
+
+        mTxCaRs.setText(sb.toString());
+
+    }
+
+
+    private void fetchAllCconfig() {
+        setDefault();
+        ServiceRemoteConfigInstance.getInstance(getApplicationContext()).fetchValue();
     }
 
 
@@ -114,6 +147,17 @@ public class ServiceConfig extends Activity {
             io.printStackTrace();
         }
         ServiceRemoteConfigInstance.getInstance(getApplicationContext()).getString("hi_launcher_show_hot_game");
+    }
+
+
+    private void setDefault() {
+        try {
+            ServiceRemoteConfigInstance.getInstance(getApplicationContext()).setDefaultValue("default_value.xml");
+        } catch (XmlPullParserException xmlEx) {
+            xmlEx.printStackTrace();
+        } catch (IOException io) {
+            io.printStackTrace();
+        }
     }
 
 
