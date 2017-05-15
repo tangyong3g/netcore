@@ -28,12 +28,23 @@
         android:layout_below="@+id/btn_fetch_ads_online"
         android:text="获取广告_缓存" />
 
-    <TextView
-        android:id="@+id/tx_result"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/btn_fetch_ads_ca"
-        android:text="TextView" />
+        android:layout_below="@+id/btn_fetch_ads_ca">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tx_result"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+    </ScrollView>
 </RelativeLayout>

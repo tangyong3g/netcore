@@ -133,7 +133,17 @@ public class AdvertisementActivity extends Activity {
         mTxResult.post(new Runnable() {
             @Override
             public void run() {
-                mTxResult.setText(result);
+
+                String original = mTxResult.getText().toString();
+
+                StringBuffer sb = new StringBuffer("");
+
+                sb.append(original);
+                sb.append("\n");
+                sb.append("------------------------");
+                sb.append(result);
+
+                mTxResult.setText(sb.toString());
             }
         });
     }

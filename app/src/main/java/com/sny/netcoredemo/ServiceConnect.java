@@ -22,7 +22,6 @@ public class ServiceConnect extends BaseListActivity {
         info = new ItemComponentInfo("Advertisment", AdvertisementActivity.class);
         mItemsInfo.add(info);
 
-
         initDisplayList();
     }
 
