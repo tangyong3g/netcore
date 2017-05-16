@@ -113,7 +113,7 @@ public class ServiceConfig extends Activity {
     private void fetchRemoteValueFromCa() {
 
         String key = mETx.getText().toString();
-        String value = ServiceRemoteConfigInstance.getInstance(getApplicationContext()).getString(key);
+        String value = ServiceRemoteConfigInstance.getInstance(getApplicationContext()).getString(key.trim());
 
         StringBuffer sb = new StringBuffer("");
 
