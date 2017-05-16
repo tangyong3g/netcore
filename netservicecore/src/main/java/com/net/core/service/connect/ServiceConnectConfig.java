@@ -59,6 +59,10 @@ public class ServiceConnectConfig implements Callback, Serializable {
             callbacks.add(callback);
             //TODO fetchvalueWithUrl
             ServiceConnectInstance.getInstance(context).fetchValueWithURL(callbacks, url, params);
+
+            if (BuildConfig.DEBUG) {
+                Log.i(TAG, "time out  get data from server !");
+            }
         }
     }
 
@@ -77,10 +81,6 @@ public class ServiceConnectConfig implements Callback, Serializable {
             return true;
         }
         result = (System.currentTimeMillis() - mLastFetchTime) > cacheTime;
-
-        if (BuildConfig.DEBUG) {
-            Log.i(TAG, "locadata is time out :\t" + result);
-        }
 
         //TODO 这里加上标准的时间会更好
         if (BuildConfig.DEBUG) {

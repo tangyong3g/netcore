@@ -2,13 +2,18 @@ package com.sny.netcoredemo.connect;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
 import com.net.core.service.connect.Callback;
 import com.net.core.service.connect.ServiceConnectException;
 import com.net.core.service.connect.ServiceConnectInstance;
+import com.net.core.unit.AESUtil;
 import com.sny.netcoredemo.R;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -16,8 +21,10 @@ import java.util.Map;
 
 import okhttp3.Call;
 
-public class AdvertisementActivity extends Activity {
 
+public class AdvertisementActivity extends Activity {
+    //数据解密 Key值
+    private static final String AES_KEY = "cqgf971sp394@!#0";
     TextView mTxResult;
 
     @Override
@@ -79,7 +86,15 @@ public class AdvertisementActivity extends Activity {
 
             @Override
             public void onResponse(Call call, String result) throws IOException {
-                displayResult(result);
+
+                try {
+                    result = getReturnDataFromJson(result, "data");
+                    String rs = AESUtil.decryptUncompress(result, AES_KEY, false);
+                    displayResult(rs);
+
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
             }
         }, url, params);
 
@@ -111,7 +126,15 @@ public class AdvertisementActivity extends Activity {
 
                 @Override
                 public void onResponse(Call call, String result) throws IOException {
-                    displayResult(result);
+
+                    try {
+                        result = getReturnDataFromJson(result, "data");
+                        String rs = AESUtil.decryptUncompress(result, AES_KEY, false);
+                        displayResult(rs);
+
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
                 }
             }, url, params, 24 * 3600 * 1000);
 
@@ -146,5 +169,20 @@ public class AdvertisementActivity extends Activity {
                 mTxResult.setText(sb.toString());
             }
         });
+    }
+
+
+    private String getReturnDataFromJson(String returnData, String key) {
+        String result = null;
+        if (TextUtils.isEmpty(returnData)) {
+            return null;
+        }
+        try {
+            JSONObject jsonObject = new JSONObject(returnData);
+            result = jsonObject.getString(key);
+        } catch (JSONException je) {
+            je.printStackTrace();
+        }
+        return result;
     }
 }

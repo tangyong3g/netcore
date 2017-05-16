@@ -95,12 +95,21 @@ public class ServiceConnectInstance {
 
         if (config != null) {
             config.fetchValueWithURLSingle(callback, url, params, cacheTime, mContext);
+
+            if (BuildConfig.DEBUG) {
+                Log.i(TAG, "load cache data!");
+            }
+
         } else {
             ServiceConnectConfig configCp = new ServiceConnectConfig(url, cacheTime);
             configCp.fetchValueWithURLSingle(callback, url, params, cacheTime, mContext);
 
             mCacheFetchData.add(configCp);
             asnySerilizable(configCp);
+
+            if (BuildConfig.DEBUG) {
+                Log.i(TAG, "local has not data ,get  from server and Serializable to local ");
+            }
         }
 
         if (BuildConfig.DEBUG) {
@@ -117,10 +126,9 @@ public class ServiceConnectInstance {
             @Override
             public void run() {
                 super.run();
-                writeObj(config);
+                writeObj(mCacheFetchData);
             }
         };
-
         thread.start();
     }
 
@@ -364,9 +372,9 @@ public class ServiceConnectInstance {
     /**
      * 序列化对象，整个List序列化
      *
-     * @param config
+     * @param configs
      */
-    private void writeObj(ServiceConnectConfig config) {
+    private void writeObj(ArrayList<ServiceConnectConfig> configs) {
 
         FileOutputStream fos = null;
         ObjectOutputStream oos = null;
@@ -376,7 +384,7 @@ public class ServiceConnectInstance {
 
             fos = new FileOutputStream(file);
             oos = new ObjectOutputStream(fos);
-            oos.writeObject(mCacheFetchData);
+            oos.writeObject(configs);
 
             Log.i(TAG, "serilizable success");
         } catch (IOException ioEx) {
@@ -399,6 +407,10 @@ public class ServiceConnectInstance {
      * @return ArrayList<ServiceConnectConfig>
      */
     private ArrayList<ServiceConnectConfig> readObj() {
+
+        if (BuildConfig.DEBUG) {
+            Log.i(TAG, "read Serializable start!");
+        }
 
         File file = getInternalStorageFile();
         FileInputStream fis = null;
@@ -428,6 +440,11 @@ public class ServiceConnectInstance {
                 nullEx.printStackTrace();
             }
         }
+
+        if (BuildConfig.DEBUG && configList != null && configList.size() > 0) {
+            Log.i(TAG, "read Serializable success!" + configList.size());
+        }
+
         return configList;
     }
 
