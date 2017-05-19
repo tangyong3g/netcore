@@ -28,8 +28,8 @@ public class HttpBaseParam {
     public static HashMap<String, String> getHttpBaseParam(Context mc) {
         ConfigDataProvider configDataProvider = ConfigDataProvider.getInstance(mc);
         HashMap<String, String> baseParam = new HashMap<>();
-        baseParam.put(BaseParamKey.IMEI, configDataProvider.getIMEI());
-        baseParam.put(BaseParamKey.IMIS, configDataProvider.getIMSI());
+        //baseParam.put(BaseParamKey.IMEI, configDataProvider.getIMEI());
+        //baseParam.put(BaseParamKey.IMIS, configDataProvider.getIMSI());
         baseParam.put(BaseParamKey.LANGUAGE, configDataProvider.getLauncher());
         baseParam.put(BaseParamKey.MODEL, configDataProvider.getModel());
         baseParam.put(BaseParamKey.OS_VERSION, configDataProvider.getOsVersion());
