@@ -6,12 +6,12 @@
 
     <entry>
         <key>hi_launcher_show_hot_game</key>
-        <value>1</value>
+        <value>true</value>
     </entry>
 
     <entry>
         <key>hi_launcher_show_hot_site</key>
-        <value>1</value>
+        <value>true</value>
     </entry>
 
     <entry>
