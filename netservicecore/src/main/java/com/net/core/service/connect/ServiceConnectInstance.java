@@ -5,6 +5,11 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.net.core.BuildConfig;
+import com.net.core.unit.AESUtil;
+import com.net.core.unit.Base64Utils;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -180,7 +185,8 @@ public class ServiceConnectInstance {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String bodyStr = response.body().string();
-                Log.i(TAG, "返回的数据是:\t" + bodyStr);
+                Log.i(TAG, "返回的原始数据是:\t" + bodyStr);
+                showReturnData(bodyStr);
 
                 if (callbacks != null && !TextUtils.isEmpty(bodyStr)) {
                     try {
@@ -199,6 +205,29 @@ public class ServiceConnectInstance {
         });
     }
 
+    /**
+     * @param result
+     * @return
+     */
+    private String showReturnData(String result) {
+        try {
+            JSONObject object = new JSONObject(result);
+            String status = object.getString("status");
+            if ("0".equals(status)) {
+                String data = object.getString("data");
+                byte[] base64Byte = Base64Utils.decodeBase64(data);
+                byte[] decryptByte = AESUtil.decrypt2(base64Byte, AESUtil.AES_DECRYPT_KEY);
+
+                String mAppString = new String(decryptByte);
+                Log.i(TAG, "返回解密数据是:\t" + mAppString);
+
+            }
+        } catch (JSONException js) {
+            js.printStackTrace();
+        }
+
+    }
+
 
     /**
      * <p>
@@ -209,6 +238,7 @@ public class ServiceConnectInstance {
      * @param url      请求URl
      * @param params   参数的Key Map
      */
+
     public void fetchValueWithURL(final Callback callback, String url, Map<String, String> params) {
 
         OkHttpClient client = new OkHttpClient();
