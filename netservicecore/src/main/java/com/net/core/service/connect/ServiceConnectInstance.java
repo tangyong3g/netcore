@@ -209,7 +209,7 @@ public class ServiceConnectInstance {
      * @param result
      * @return
      */
-    private String showReturnData(String result) {
+    private void showReturnData(String result) {
         try {
             JSONObject object = new JSONObject(result);
             String status = object.getString("status");
@@ -225,7 +225,6 @@ public class ServiceConnectInstance {
         } catch (JSONException js) {
             js.printStackTrace();
         }
-
     }
 
 
