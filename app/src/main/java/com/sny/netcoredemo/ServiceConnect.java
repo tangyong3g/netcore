@@ -3,6 +3,7 @@ package com.sny.netcoredemo;
 import android.os.Bundle;
 
 import com.sny.netcoredemo.connect.AdvertisementActivity;
+import com.sny.netcoredemo.connect.HotWActivity;
 
 import java.util.ArrayList;
 
@@ -21,6 +22,11 @@ public class ServiceConnect extends BaseListActivity {
 
         info = new ItemComponentInfo("Advertisment", AdvertisementActivity.class);
         mItemsInfo.add(info);
+
+
+        info = new ItemComponentInfo("HotW", HotWActivity.class);
+        mItemsInfo.add(info);
+
 
         initDisplayList();
     }
