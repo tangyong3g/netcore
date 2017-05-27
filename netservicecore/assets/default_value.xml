@@ -130,5 +130,17 @@
         <key>joylauncher_v2_ads_boost_id</key>
         <value>e7ffd3ea89c54149ad86c358ee985e43</value>
     </entry>
+    <entry>
+        <key>rating_interval_time_day</key>
+        <value>1</value>
+    </entry>
+    <entry>
+        <key>hot_questions</key>
+        <value>
+            [{"key":"Why the apps on my screen disappeared?","value":"Hi Launcher has a drawer function to better manage your apps, where you can find all the apps. Hi Launcher won’t delete any of your apps without your permission."},{"key":"Why there are the error report?","value":"When the bug occurs, Hi launcher will send back a report automatically under your permission in order to resolve the problem as soon as possible. It won’t give away any privacy."},
+            {"key":"How does the Hi Boost works?","value":"Hi Boost can clean application caches and release free memories of your phone, thus make your phone faster and smoother."},{"key":"How can I change back to my previous launcher?","value":"You can change launcher by opening Settings, finding Home, and then choose your previous launcher."},{"key":"How can I contact you if I have some suggestions?","value":"You can write down your feedbacks on this page or you can send email to pro.feedback@tcl.com. Every feedbacks are valued by us."}
+            ]
+        </value>
+    </entry>
 
 </defaultsMap>
