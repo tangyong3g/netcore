@@ -28,4 +28,6 @@ public class ServicesConfigurationConstant {
     public static final String HI_LAUNCHER_SHOW_HOT_SITE = "hi_launcher_show_hot_site";
 
     public static final String HI_LAUNCHER_SHOW_HOT_GAME = "hi_launcher_show_hot_game";
+
+    public static final String HI_LAUNCHER_SHOW_HOT_WORD = "hi_launcher_show_hot_word";
 }
