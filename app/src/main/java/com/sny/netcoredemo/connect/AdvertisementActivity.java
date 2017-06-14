@@ -57,6 +57,18 @@ public class AdvertisementActivity extends Activity {
             }
         });
 
+
+        /**
+         * 考虑缓存改变参数
+         */
+        findViewById(R.id.btn_fetch_ads_ca_1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fetchAdsCa_1();
+            }
+        });
+
+
         mTxResult = (TextView) findViewById(R.id.tx_result);
 
     }
@@ -111,9 +123,54 @@ public class AdvertisementActivity extends Activity {
         final String url = "http://launcher-test.tclclouds.com/tlauncher-api/advertising/list";
         final Map<String, String> params = new HashMap<String, String>();
 
+
         params.put("inner_package_name", "com.tcl.launcherpro");
         params.put("posision", "1");
         params.put("num", "4");
+        params.put("country", "all_cou");
+        params.put("version", "all_ver");
+        params.put("language", "all_lan");
+        try {
+            ServiceConnectInstance.getInstance(getApplicationContext()).fetchValueWithURLWithCa(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                }
+
+                @Override
+                public void onResponse(Call call, String result) throws IOException {
+
+                    try {
+                        result = getReturnDataFromJson(result, "data");
+                        String rs = AESUtil.decryptUncompress(result, AES_KEY, false);
+                        displayResult(rs);
+
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }, url, params, 24 * 3600 * 1000);
+
+        } catch (ServiceConnectException ex) {
+            ex.printStackTrace();
+        } catch (IOException io) {
+            io.printStackTrace();
+        }
+    }
+
+
+    /**
+     * 缓存获取
+     *
+     * @return
+     */
+    private void fetchAdsCa_1() {
+
+        final String url = "http://launcher-test.tclclouds.com/tlauncher-api/advertising/list";
+        final Map<String, String> params = new HashMap<String, String>();
+
+        params.put("inner_package_name", "com.tcl.launcherpro");
+        params.put("posision", "1");
+        params.put("num", "2");
         params.put("country", "all_cou");
         params.put("version", "all_ver");
         params.put("language", "all_lan");

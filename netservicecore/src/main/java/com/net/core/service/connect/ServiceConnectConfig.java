@@ -31,9 +31,24 @@ public class ServiceConnectConfig implements Callback, Serializable {
     //服务器响应数据
     private String responseData;
     private static final String TAG = "ServiceConnectConfig";
+    //请求链接和参数组合而成的字符串，用来作为一次请求缓存数据的KEY。 如果，同一个链接，但是两次请求参数不一样，那么会构建不同的 ServiceConnectConfig的对象。
+    public String urlParamsKey;
 
     public ServiceConnectConfig(String url, long cacheTime) {
         this.url = url;
+        this.cacheTime = cacheTime;
+    }
+
+    /**
+     * 构造函数
+     *
+     * @param url          请求的url
+     * @param cacheTime    缓存时间
+     * @param urlParamsKey 请求参数和url生成的Key
+     */
+    public ServiceConnectConfig(String url, long cacheTime, String urlParamsKey) {
+        this.url = url;
+        this.urlParamsKey = urlParamsKey;
         this.cacheTime = cacheTime;
     }
 
@@ -122,7 +137,14 @@ public class ServiceConnectConfig implements Callback, Serializable {
         sb.append(mLastFetchTime);
         sb.append(",");
         sb.append("\t");
+
+        sb.append("urlParamsKey:");
+        sb.append(urlParamsKey);
+        sb.append(",");
+        sb.append("\t");
         sb.append("}");
+
+
         return sb.toString();
     }
 }

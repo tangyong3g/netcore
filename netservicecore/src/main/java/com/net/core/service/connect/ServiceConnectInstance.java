@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -86,6 +87,32 @@ public class ServiceConnectInstance {
     }
 
 
+    private String initUrlParamsKey(String url, Map<String, String> params) {
+        if (TextUtils.isEmpty(url)) {
+            return null;
+        }
+
+        StringBuffer sb = new StringBuffer(url);
+
+        if (params != null && params.size() > 0) {
+
+            for (String key : params.keySet()) {
+                String value = params.get(key);
+                sb.append("&");
+                sb.append(key);
+                sb.append("=");
+                sb.append(value);
+            }
+        }
+
+        if (BuildConfig.DEBUG) {
+            Log.i(TAG, "init urlParamsKey is :\t" + sb.toString());
+        }
+
+        return sb.toString();
+    }
+
+
     /**
      * 获取服务器数据，并且会处理缓存逻辑
      *
@@ -96,7 +123,7 @@ public class ServiceConnectInstance {
     public void fetchValueWithURLWithCa(final Callback callback, String url, Map<String, String> params, long cacheTime) throws IOException, ServiceConnectException {
 
         //获取是否有本地数据
-        ServiceConnectConfig config = getConnectConfigFromCache(url);
+        ServiceConnectConfig config = getConnectConfigFromCache(url, params);
 
         if (config != null) {
             config.fetchValueWithURLSingle(callback, url, params, cacheTime, mContext);
@@ -106,7 +133,9 @@ public class ServiceConnectInstance {
             }
 
         } else {
-            ServiceConnectConfig configCp = new ServiceConnectConfig(url, cacheTime);
+
+            String keyParams = initUrlParamsKey(url, params);
+            ServiceConnectConfig configCp = new ServiceConnectConfig(url, cacheTime, keyParams);
             configCp.fetchValueWithURLSingle(callback, url, params, cacheTime, mContext);
 
             mCacheFetchData.add(configCp);
@@ -335,6 +364,31 @@ public class ServiceConnectInstance {
             }
         }
         return result;
+    }
+
+
+    /**
+     * 获取 ConnectConfig
+     *
+     * @param url
+     * @return
+     */
+    private ServiceConnectConfig getConnectConfigFromCache(String url, Map<String, String> params) {
+        ServiceConnectConfig config = null;
+
+        if (TextUtils.isEmpty(url)) {
+            return config;
+        }
+
+        String urlParamsKey = initUrlParamsKey(url, params);
+
+        for (ServiceConnectConfig temp : mCacheFetchData) {
+            if (urlParamsKey.equals(temp.urlParamsKey)) {
+                config = temp;
+                return config;
+            }
+        }
+        return config;
     }
 
 
