@@ -30,4 +30,14 @@ public class ServicesConfigurationConstant {
     public static final String HI_LAUNCHER_SHOW_HOT_GAME = "hi_launcher_show_hot_game";
 
     public static final String HI_LAUNCHER_SHOW_HOT_WORD = "hi_launcher_show_hot_word";
+
+    public static final String HI_LAUNCHER_FOLDER_Recommend = "hi_launcher_folder_recommend";
+
+    public static final String HI_LAUNCHER_DRAWER_Recommend = "hi_launcher_drawer_recommend";
+
+    public static final String V1_LAUNCHER_SHOW_HOT_SITE = "v1_launcher_show_hot_site";
+
+    public static final String V1_LAUNCHER_SHOW_HOT_GAME = "v1_launcher_show_hot_game";
+
+    public static final String V1_LAUNCHER_SHOW_HOT_WORD = "v1_launcher_show_hot_word";
 }
