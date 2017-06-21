@@ -142,5 +142,14 @@
             ]
         </value>
     </entry>
+    <entry>
+        <key>hi_launcher_default_search_engine</key>
+        <value>5</value>
+    </entry>
+    <entry>
+        <key>hi_launcher_search_oder</key>
+        <value>12345</value>
+    </entry>
+
 
 </defaultsMap>
