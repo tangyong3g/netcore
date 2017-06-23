@@ -45,4 +45,8 @@ public class ServicesConfigurationConstant {
     public static final String HI_LAUNCHER_DEFAULT_SEARCH_ENGINE = "hi_launcher_default_search_engine";
     /** 搜索页面各元素排序 */
     public static final String HI_LAUNCHER_SEARCH_ORDER = "hi_launcher_search_oder";
+
+    public static final String V3_LAUNCHER_SHOW_HOT_SITE = "v3_joy_launcher_show_hot_site";
+
+    public static final String V3_LAUNCHER_SHOW_HOT_GAME = "v3_joy_launcher_show_hot_game";
 }

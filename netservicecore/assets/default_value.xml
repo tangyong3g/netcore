@@ -150,6 +150,22 @@
         <key>hi_launcher_search_oder</key>
         <value>12345</value>
     </entry>
+    <entry>
+        <key>hi_launcher_drawer_recommend</key>
+        <value>1</value>
+    </entry>
+    <entry>
+        <key>hi_launcher_folder_recommend</key>
+        <value>1</value>
+    </entry>
+    <entry>
+        <key>v3_joy_launcher_show_hot_game	</key>
+        <value>1</value>
+    </entry>
+    <entry>
+        <key>v3_joy_launcher_show_hot_site</key>
+        <value>1</value>
+    </entry>
 
 
 </defaultsMap>
