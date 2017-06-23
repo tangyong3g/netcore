@@ -15,6 +15,11 @@
     </entry>
 
     <entry>
+        <key>hi_launcher_show_hot_word</key>
+        <value>1</value>
+    </entry>
+
+    <entry>
         <key>JRD_V2_AD_COUNT</key>
         <value>4</value>
     </entry>
@@ -166,6 +171,17 @@
         <key>v3_joy_launcher_show_hot_site</key>
         <value>1</value>
     </entry>
-
+    <entry>
+        <key>v1_launcher_show_hot_site</key>
+        <value>1</value>
+    </entry>
+    <entry>
+        <key>v1_launcher_show_hot_game</key>
+        <value>1</value>
+    </entry>
+    <entry>
+        <key>v1_launcher_show_hot_word</key>
+        <value>1</value>
+    </entry>
 
 </defaultsMap>
