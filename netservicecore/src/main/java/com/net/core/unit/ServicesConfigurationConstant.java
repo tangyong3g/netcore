@@ -49,4 +49,6 @@ public class ServicesConfigurationConstant {
     public static final String V3_LAUNCHER_SHOW_HOT_SITE = "v3_joy_launcher_show_hot_site";
 
     public static final String V3_LAUNCHER_SHOW_HOT_GAME = "v3_joy_launcher_show_hot_game";
+    /** 桌面gamebox_banner开关 */
+    public static final String HI_LAUNCHER_GAMEBOX_BANNER = "hi_launcher_gamebox_banner";
 }

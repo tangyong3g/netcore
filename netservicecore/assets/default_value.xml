@@ -183,5 +183,9 @@
         <key>v1_launcher_show_hot_word</key>
         <value>1</value>
     </entry>
+    <entry>
+        <key>hi_launcher_gamebox_banner</key>
+        <value>true</value>
+    </entry>
 
 </defaultsMap>
