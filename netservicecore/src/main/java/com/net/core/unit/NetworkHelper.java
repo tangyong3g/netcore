@@ -37,7 +37,7 @@ public class NetworkHelper {
         return HelperHolder.helper;
     }
     /*
-	private static void load()
+    private static void load()
 	{
 		try {
 			System.loadLibrary("networkhelper");
@@ -75,11 +75,9 @@ public class NetworkHelper {
             mStatus = NetworkStatus.NetworkReachableViaWiFi;
         }
 
-        //native_set_network_status(mStatus.ordinal());
-
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
-//        context.registerReceiver(mReceiver, intentFilter);
+        context.registerReceiver(mReceiver, intentFilter);
     }
 
     public void unregisterNetworkSensor(Context context) {
