@@ -42,6 +42,7 @@ public class SerCfgCons {
     public static final String FEEDBACK_GOOGLE = "feedback_google";
     public static final String FEEDBACK_FACEBOOK = "feedback_facebook";
     public static final String HOT_QUESTION = "hot_question";
+    public static final String IS_SHOW_LOCK_SCREEN_ADS = "is_show_lock_screen_ads";
 
     /**
      * 根据渠道和项目生成最后的key
