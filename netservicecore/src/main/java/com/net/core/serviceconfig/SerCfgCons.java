@@ -45,7 +45,6 @@ public class SerCfgCons {
     public static final String IS_SHOW_LOCK_SCREEN_ADS = "is_show_lock_screen_ads";
     public static final String INTERVAL_TIME_KEY = "rating_interval_time_day";
 
-
     /**
      * 根据渠道和项目生成最后的key
      * <p>
