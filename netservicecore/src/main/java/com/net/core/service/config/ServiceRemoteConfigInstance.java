@@ -1,6 +1,7 @@
 package com.net.core.service.config;
 
 import android.content.Context;
+import android.icu.util.Calendar;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -14,6 +15,8 @@ import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -371,10 +374,18 @@ public class ServiceRemoteConfigInstance {
         if (mLastFetchTime == 0) {
             return true;
         }
+
+        SimpleDateFormat sm = new SimpleDateFormat("yyyyMMdd HH:mm:ss");
+        String currentStr = sm.format(new Date());
+
+        Date lastFetchTime = new Date(mLastFetchTime);
+        String lastFetchTimeStr = sm.format(lastFetchTime);
+
+
         result = (System.currentTimeMillis() - mLastFetchTime) > mCacheTime;
 
         if (BuildConfig.DEBUG) {
-            Log.i(TAG, "locadata is time out :\t" + result);
+            Log.i(TAG, "locadata is time out :\t" + result +"\t current time is:\t"+currentStr+"\t last fechTime is :\t"+lastFetchTimeStr);
         }
         return result;
     }
