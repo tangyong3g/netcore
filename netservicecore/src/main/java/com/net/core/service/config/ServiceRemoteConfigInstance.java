@@ -104,6 +104,8 @@ public class ServiceRemoteConfigInstance {
     private long mLastFetchTime = 0L;
     //存储用的key
     private static final String LAST_FETCHTIME_KEY = "lastFetchTime";
+    //存储sp文件里面的值的key
+    private static final String LAST_FETCH_REMOTE_VALUE_KEY = "lastFetchRemoteValueKey";
     //存储默认值文件默认名称
     public static final String DEFAULT_FILENAME = "default_value.xml";
 
@@ -139,19 +141,47 @@ public class ServiceRemoteConfigInstance {
             mServerValue = new HashMap<String, String>();
         }
         mLastFetchTime = (Long) SPUtils.get(mContext, LAST_FETCHTIME_KEY, 0L);
+        //恢复数据
+        recoveryValueFromLocal();
 
-        try {
-            setDefaultValue(DEFAULT_FILENAME);
-        } catch (XmlPullParserException xmlEx) {
-            xmlEx.printStackTrace();
-        } catch (IOException io) {
-            io.printStackTrace();
+        //从文件中恢复数据没有，或者不成功
+        if (mServerValue.size() == 0) {
+            //从文件中获取原来存储的值
+            try {
+                setDefaultValue(DEFAULT_FILENAME);
+            } catch (XmlPullParserException xmlEx) {
+                xmlEx.printStackTrace();
+            } catch (IOException io) {
+                io.printStackTrace();
+            }
         }
 
         if (BuildConfig.DEBUG) {
             Log.i(TAG, "init ServiceRemoteConfigInstance finish");
             Log.i(TAG, "last fetch time is :\t" + mLastFetchTime);
         }
+    }
+
+
+    /**
+     * 从sp文件中恢复配置数据
+     */
+    private void recoveryValueFromLocal() {
+
+        String lastStore = (String) SPUtils.get(mContext, LAST_FETCH_REMOTE_VALUE_KEY, "");
+
+        if (BuildConfig.DEBUG) {
+            Log.i(TAG, "recovery value from local start , recovery data is :" + lastStore);
+        }
+
+        if (!TextUtils.isEmpty(lastStore)) {
+            storeJsonDataToLocal(lastStore);
+        }
+
+        if (BuildConfig.DEBUG) {
+            Log.i(TAG, "recovery value from local success!");
+        }
+
     }
 
     /**
@@ -295,18 +325,39 @@ public class ServiceRemoteConfigInstance {
             }
 
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
+            public void onResponse(Call call, final Response response) throws IOException {
                 if (BuildConfig.DEBUG) {
                     Log.i(TAG, "fetch data success!");
                 }
-                //处理数据 【解密以及获取 configuration 】
-                String value = resolveServerData(response);
-                //把服务器的数据存储到本地来 mem
-                Map<String, String> values = storeJsonDataToLocal(value);
-                long currentTime = System.currentTimeMillis();
-                //存储获取时间
-                SPUtils.put(mContext, LAST_FETCHTIME_KEY, currentTime);
-                mLastFetchTime = currentTime;
+
+                /**
+                 * 解密数据，以及重新存储用时 约为 30-50ms ，又在主线程上面会造成skip frames 的问题
+                 */
+
+                Thread thread = new Thread() {
+                    @Override
+                    public void run() {
+                        super.run();
+
+                        //处理数据 【解密以及获取 configuration 】
+                        String value = null;
+                        try {
+                            value = resolveServerData(response);
+                            //把服务器的数据存储到本地来 mem
+                            Map<String, String> values = storeJsonDataToLocal(value);
+                            //把解密后的数据存储
+                            long currentTime = System.currentTimeMillis();
+                            //存储获取时间
+                            SPUtils.put(mContext, LAST_FETCHTIME_KEY, currentTime);
+                            SPUtils.put(mContext, LAST_FETCH_REMOTE_VALUE_KEY, value);
+
+                        } catch (IOException io) {
+                            io.printStackTrace();
+                        }
+                    }
+                };
+                thread.start();
+                mLastFetchTime = System.currentTimeMillis();
             }
         });
     }
