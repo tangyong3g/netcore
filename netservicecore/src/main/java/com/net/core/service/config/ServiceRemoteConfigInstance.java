@@ -95,7 +95,7 @@ public class ServiceRemoteConfigInstance {
     //日志 Tag
     private static final String TAG = "ServiceConfig";
     //数据缓存的时间 默认12个小时
-    private long mCacheTime = 3600 * 1000 * 12;
+    private long mCacheTime = 3600 * 1000 * 24;
     //服务器接口URL
     private static final String CONFIGURATION_URL = BuildConfig.configuration;
     //本地数据是否超时
