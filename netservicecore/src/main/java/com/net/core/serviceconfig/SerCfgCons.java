@@ -44,7 +44,12 @@ public class SerCfgCons {
     public static final String HOT_QUESTION = "hot_question";
     public static final String IS_SHOW_LOCK_SCREEN_ADS = "is_show_lock_screen_ads";
     public static final String INTERVAL_TIME_KEY = "rating_interval_time_day";
-
+    public static final String ENGINE_GOOGLE_URL="engine_google_url";
+    public static final String ENGINE_BAIDU_URL="engine_baidu_url";
+    public static final String ENGINE_BING_URL="engine_bing_url";
+    public static final String ENGINE_YANDEX_URL="engine_yandex_url";
+    public static final String ENGINE_YAHOO_URL="engine_yahoo_url";
+    public static final String SHOW_HOT_WORD_YANDEX="engine_yandex_url";
     /**
      * 根据渠道和项目生成最后的key
      * <p>
