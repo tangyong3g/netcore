@@ -49,7 +49,10 @@ public class SerCfgCons {
     public static final String ENGINE_BING_URL="engine_bing_url";
     public static final String ENGINE_YANDEX_URL="engine_yandex_url";
     public static final String ENGINE_YAHOO_URL="engine_yahoo_url";
-    public static final String SHOW_HOT_WORD_YANDEX="engine_yandex_url";
+    public static final String SHOW_YANDEX_KEYWORD="show_yandex_keyword";
+    public static final String LSREEN_CARD_ADS_LIST_INDEX="lsreen_card_ads_list_index";
+    public static final String LSREEN_CARD_ADS_TYPE="lsreen_card_ads_TYPE";
+
     /**
      * 根据渠道和项目生成最后的key
      * <p>
