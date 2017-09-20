@@ -44,14 +44,22 @@ public class SerCfgCons {
     public static final String HOT_QUESTION = "hot_question";
     public static final String IS_SHOW_LOCK_SCREEN_ADS = "is_show_lock_screen_ads";
     public static final String INTERVAL_TIME_KEY = "rating_interval_time_day";
-    public static final String ENGINE_GOOGLE_URL="engine_google_url";
-    public static final String ENGINE_BAIDU_URL="engine_baidu_url";
-    public static final String ENGINE_BING_URL="engine_bing_url";
-    public static final String ENGINE_YANDEX_URL="engine_yandex_url";
-    public static final String ENGINE_YAHOO_URL="engine_yahoo_url";
-    public static final String SHOW_YANDEX_KEYWORD="show_yandex_keyword";
-    public static final String LSREEN_CARD_ADS_LIST_INDEX="lsreen_card_ads_list_index";
-    public static final String LSREEN_CARD_ADS_TYPE="lsreen_card_ads_TYPE";
+    public static final String ENGINE_GOOGLE_URL = "engine_google_url";
+    public static final String ENGINE_BAIDU_URL = "engine_baidu_url";
+    public static final String ENGINE_BING_URL = "engine_bing_url";
+    public static final String ENGINE_YANDEX_URL = "engine_yandex_url";
+    public static final String ENGINE_YAHOO_URL = "engine_yahoo_url";
+    public static final String SHOW_YANDEX_KEYWORD = "show_yandex_keyword";
+    public static final String LSREEN_CARD_ADS_LIST_INDEX = "lsreen_card_ads_list_index";
+    public static final String LSREEN_CARD_ADS_TYPE = "lsreen_card_ads_TYPE";
+
+
+    /**
+     *  note :
+     *
+     *    SerConf  里面不再增加任何 常量的Key，全都让客户端传入进来，这里不耦合业务。
+     *
+     */
 
     /**
      * 根据渠道和项目生成最后的key

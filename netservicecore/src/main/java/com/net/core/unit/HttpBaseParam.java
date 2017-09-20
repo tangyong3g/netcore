@@ -8,7 +8,6 @@ import java.util.HashMap;
  * Created by liwu.shu on 2016/7/12.
  */
 public class HttpBaseParam {
-    //imei, user_info_id, region , version_name, network, screen_size, language, os_version, imsi, os_version_code, model
     public String imei;
     public String user_info_id;
     public String region;

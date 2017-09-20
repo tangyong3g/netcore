@@ -178,6 +178,5 @@ public class NetworkHelper {
         }
     }
 
-    //private native static void native_set_network_status(int status);
 
 }

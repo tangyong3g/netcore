@@ -270,11 +270,12 @@ public class TelephonyManagerUtil {
         return tm.isNetworkRoaming();//
     }
 
+    /*
+    方法不再使用
     public String getserializeNo() {
         String sqareMac = "";
         if (appContext == null)
             return sqareMac;
-        sqareMac = ConfigDataProvider.getInstance(appContext).getSpareMacData();
         if (TextUtils.isEmpty(sqareMac)) {
             WifiManager wifi = (WifiManager) appContext.getSystemService(Context.WIFI_SERVICE);
             sqareMac = wifi.getConnectionInfo().getMacAddress();
@@ -294,5 +295,5 @@ public class TelephonyManagerUtil {
         }
         return sqareMac;
     }
-
+    */
 }
