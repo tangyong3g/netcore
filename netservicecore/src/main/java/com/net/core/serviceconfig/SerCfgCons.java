@@ -56,6 +56,7 @@ public class SerCfgCons {
     public static final String LSREEN_DETAIL_ADS_TYPE="lsreen_detail_ads_type";
     public static final String LSREEN_ADS_STYLE_SCHEME="lsreen_ads_style_scheme";
     public static final String SETTING_IS_SHOW_LOCK_ITEM="setting_is_show_lock_item";
+    public static final String SHOW_LOCK_SCREEN_V_1_3="show_lock_screen_v_1_3";
 
 
     /**
