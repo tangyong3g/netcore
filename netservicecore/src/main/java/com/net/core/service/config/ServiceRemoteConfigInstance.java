@@ -343,14 +343,15 @@ public class ServiceRemoteConfigInstance {
                         String value = null;
                         try {
                             value = resolveServerData(response);
-                            //把服务器的数据存储到本地来 mem
-                            Map<String, String> values = storeJsonDataToLocal(value);
-                            //把解密后的数据存储
-                            long currentTime = System.currentTimeMillis();
-                            //存储获取时间
-                            SPUtils.put(mContext, LAST_FETCHTIME_KEY, currentTime);
-                            SPUtils.put(mContext, LAST_FETCH_REMOTE_VALUE_KEY, value);
-
+                            if (value != null) {
+                                //把服务器的数据存储到本地来 mem
+                                Map<String, String> values = storeJsonDataToLocal(value);
+                                //把解密后的数据存储
+                                long currentTime = System.currentTimeMillis();
+                                //存储获取时间
+                                SPUtils.put(mContext, LAST_FETCHTIME_KEY, currentTime);
+                                SPUtils.put(mContext, LAST_FETCH_REMOTE_VALUE_KEY, value);
+                            }
                         } catch (IOException io) {
                             io.printStackTrace();
                         }
