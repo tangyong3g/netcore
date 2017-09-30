@@ -343,7 +343,7 @@ public class ServiceRemoteConfigInstance {
                         String value = null;
                         try {
                             value = resolveServerData(response);
-                            if (value != null) {
+                            if (!TextUtils.isEmpty(value)) {
                                 //把服务器的数据存储到本地来 mem
                                 Map<String, String> values = storeJsonDataToLocal(value);
                                 //把解密后的数据存储
