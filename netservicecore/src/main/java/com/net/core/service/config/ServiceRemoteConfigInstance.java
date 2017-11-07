@@ -189,13 +189,12 @@ public class ServiceRemoteConfigInstance {
     public ServiceRemoteConfigInstance setIsSupportFireBase(boolean supportFireBase) {
         isSupportFirebase = supportFireBase;
         //处理firebase
-        if (isSupportFirebase) {
+        if (supportFireBase) {
             Task task = FirebaseRemoteConfig.getInstance().fetch();
             task.addOnCompleteListener(new OnCompleteListener() {
                 @Override
                 public void onComplete(@NonNull Task task) {
                     if (task.isSuccessful()) {
-
                         if (BuildConfig.DEBUG) {
                             Log.i(TAG, "firebase fetch value success!");
                         }
@@ -282,6 +281,11 @@ public class ServiceRemoteConfigInstance {
         if (isSupportFirebase) {
             //TODO 这里没有办法确保一定fetch过。
             result = FirebaseRemoteConfig.getInstance().getString(key);
+
+            if (BuildConfig.DEBUG) {
+                Log.i(TAG, "get from firebase the key is:" + key + "\tthe value is  " + result);
+
+            }
             return result;
         }
 
