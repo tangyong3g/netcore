@@ -2,9 +2,13 @@ package com.net.core.service.config;
 
 import android.content.Context;
 import android.icu.util.Calendar;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.net.core.BuildConfig;
 import com.net.core.unit.AESUtil;
 import com.net.core.unit.SPUtils;
@@ -108,6 +112,8 @@ public class ServiceRemoteConfigInstance {
     private static final String LAST_FETCH_REMOTE_VALUE_KEY = "lastFetchRemoteValueKey";
     //存储默认值文件默认名称
     public static final String DEFAULT_FILENAME = "default_value.xml";
+    //是否支持 firebase Config 如果是支持的话，那么会获取Firebase的值
+    private boolean isSupportFirebase = false;
 
     //对外公开的接口
     public static ServiceRemoteConfigInstance getInstance(Context context) {
@@ -116,7 +122,6 @@ public class ServiceRemoteConfigInstance {
         }
         return mInstance;
     }
-
 
     /**
      * 设置缓存时间
@@ -160,6 +165,50 @@ public class ServiceRemoteConfigInstance {
             Log.i(TAG, "init ServiceRemoteConfigInstance finish");
             Log.i(TAG, "last fetch time is :\t" + mLastFetchTime);
         }
+
+        //处理firebase
+        if (isSupportFirebase) {
+            Task task = FirebaseRemoteConfig.getInstance().fetch();
+            task.addOnCompleteListener(new OnCompleteListener() {
+                @Override
+                public void onComplete(@NonNull Task task) {
+                    if (task.isSuccessful()) {
+                        FirebaseRemoteConfig.getInstance().activateFetched();
+                    }
+                }
+            });
+        }
+    }
+
+    /**
+     * 是否支持firebase
+     *
+     * @param isSupportFirebase
+     * @return
+     */
+    public ServiceRemoteConfigInstance setIsSupportFireBase(boolean supportFireBase) {
+        isSupportFirebase = supportFireBase;
+        //处理firebase
+        if (isSupportFirebase) {
+            Task task = FirebaseRemoteConfig.getInstance().fetch();
+            task.addOnCompleteListener(new OnCompleteListener() {
+                @Override
+                public void onComplete(@NonNull Task task) {
+                    if (task.isSuccessful()) {
+
+                        if (BuildConfig.DEBUG) {
+                            Log.i(TAG, "firebase fetch value success!");
+                        }
+                        FirebaseRemoteConfig.getInstance().activateFetched();
+                    } else {
+                        if (BuildConfig.DEBUG) {
+                            Log.i(TAG, "firebase fetch value fail!");
+                        }
+                    }
+                }
+            });
+        }
+        return this;
     }
 
 
@@ -229,6 +278,12 @@ public class ServiceRemoteConfigInstance {
      */
     public String getString(String key) {
         String result = null;
+
+        if (isSupportFirebase) {
+            //TODO 这里没有办法确保一定fetch过。
+            result = FirebaseRemoteConfig.getInstance().getString(key);
+            return result;
+        }
 
         //从服务器缓存得到 没有超时的时候
         if (isTimeOut()) {
@@ -437,7 +492,7 @@ public class ServiceRemoteConfigInstance {
         result = (System.currentTimeMillis() - mLastFetchTime) > mCacheTime;
 
         if (BuildConfig.DEBUG) {
-            Log.i(TAG, "locadata is time out :\t" + result +"\t current time is:\t"+currentStr+"\t last fechTime is :\t"+lastFetchTimeStr);
+            Log.i(TAG, "locadata is time out :\t" + result + "\t current time is:\t" + currentStr + "\t last fechTime is :\t" + lastFetchTimeStr);
         }
         return result;
     }

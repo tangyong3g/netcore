@@ -20,7 +20,8 @@
             android:name=".ServiceConnect"
             android:label="@string/title_activity_service_connect" />
         <activity android:name=".connect.AdvertisementActivity" />
-        <activity android:name=".connect.HotWActivity"></activity>
+        <activity android:name=".connect.HotWActivity" />
+        <activity android:name=".FireBaseActivity"></activity>
     </application>
 
 </manifest>
