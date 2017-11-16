@@ -34,4 +34,41 @@ public class CloudControlUtil {
         }
         return isAdRealTime;
     }
+
+
+    /**
+     * 获取云控key对应的boolean值,如果云端获取失败,默认返回true
+     * @param couldKey 配置项的key值,参看@{@link SerCfgCons}的静态变量值
+     * @param defaultValue 云端获取失败返回的默认值
+     * @return
+     */
+    public static boolean getBooleanByCloudKey(String couldKey, boolean defaultValue) {
+        String key = SerCfgCons.initFinalKey(couldKey, sContext);
+        final String value = ServiceRemoteConfigInstance.getInstance(sContext).getString(key);
+        try{
+            defaultValue = Boolean.parseBoolean(value);
+        }catch (ParcelFormatException ex){
+            ex.printStackTrace();
+        }
+        return defaultValue;
+    }
+
+    /**
+     * 获取云控key对应的Int值,如果云端获取失败
+     * @param couldKey 配置项的key值,参看@{@link SerCfgCons}的静态变量值
+     * @param defaultValue 云端获取失败返回的默认值
+     * @return
+     */
+    public static int getIntByCloudKey(String couldKey, int defaultValue) {
+        String key = SerCfgCons.initFinalKey(couldKey, sContext);
+        final String value = ServiceRemoteConfigInstance.getInstance(sContext).getString(key);
+        try{
+            defaultValue = Integer.valueOf(value);
+        }catch (ParcelFormatException ex){
+            ex.printStackTrace();
+        }
+        return defaultValue;
+    }
+
+
 }

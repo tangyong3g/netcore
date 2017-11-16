@@ -58,6 +58,8 @@ public class SerCfgCons {
     public static final String SETTING_IS_SHOW_LOCK_ITEM="setting_is_show_lock_item";
     public static final String SHOW_LOCK_SCREEN_V_1_3="show_lock_screen_v_1_3";
     public static final String LSCREEN_IS_ADS_REAL_TIME="lscreen_is_ads_real_time";
+    public static final String LSCREEN_IS_SHOW_NEWS_AD1="lscreen_is_show_news_ad1";
+    public static final String LSCREEN_IS_SHOW_NEWS_AD2="lscreen_is_show_news_ad2";
 
 
     /**
