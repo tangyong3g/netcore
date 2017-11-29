@@ -2,9 +2,15 @@ package com.net.core.unit;
 
 import android.content.Context;
 import android.os.ParcelFormatException;
+import android.telephony.TelephonyManager;
 
 import com.net.core.service.config.ServiceRemoteConfigInstance;
 import com.net.core.serviceconfig.SerCfgCons;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * <br>类描述:云控开关工具类
@@ -43,8 +49,7 @@ public class CloudControlUtil {
      * @return
      */
     public static boolean getBooleanByCloudKey(String couldKey, boolean defaultValue) {
-        String key = SerCfgCons.initFinalKey(couldKey, sContext);
-        final String value = ServiceRemoteConfigInstance.getInstance(sContext).getString(key);
+        final String value = getStringByCloudKey(couldKey);
         try{
             defaultValue = Boolean.parseBoolean(value);
         }catch (ParcelFormatException ex){
@@ -60,8 +65,7 @@ public class CloudControlUtil {
      * @return
      */
     public static int getIntByCloudKey(String couldKey, int defaultValue) {
-        String key = SerCfgCons.initFinalKey(couldKey, sContext);
-        final String value = ServiceRemoteConfigInstance.getInstance(sContext).getString(key);
+        final String value = getStringByCloudKey(couldKey);
         try{
             defaultValue = Integer.valueOf(value);
         }catch (ParcelFormatException ex){
@@ -71,4 +75,44 @@ public class CloudControlUtil {
     }
 
 
+    public static String getStringByCloudKey(String couldKey){
+        String key = SerCfgCons.initFinalKey(couldKey, sContext);
+        String value = ServiceRemoteConfigInstance.getInstance(sContext).getString(key);
+        return value;
+    }
+
+    public static String getCountry() {
+        TelephonyManager manager = (TelephonyManager) sContext.getSystemService(Context.TELEPHONY_SERVICE);
+        String country=manager.getSimCountryIso();
+        String c ;
+        if (country==null || country.isEmpty()){
+            c = Locale.getDefault().getCountry();
+        }else{
+            c = country;
+        }
+        return c;
+    }
+
+    public static boolean isLoadAd() {
+        String country = getCountry();
+        if (country != null && !country.isEmpty()) {
+            String c = country.toLowerCase();
+            String cloudCountry =getStringByCloudKey(SerCfgCons.NO_ADS_COUNTRY);
+            List<String> list = getSplitList(cloudCountry);
+            for (String s : list) {
+                if (s.equals(c)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public static List<String> getSplitList(String str){
+        List countryList=new ArrayList();
+        if (str!=null && !str.isEmpty()){
+            countryList = Arrays.asList(str.split(","));
+        }
+        return countryList;
+    }
 }

@@ -60,6 +60,7 @@ public class SerCfgCons {
     public static final String LSCREEN_IS_ADS_REAL_TIME="lscreen_is_ads_real_time";
     public static final String LSCREEN_IS_SHOW_NEWS_AD1="lscreen_is_show_news_ad1";
     public static final String LSCREEN_IS_SHOW_NEWS_AD2="lscreen_is_show_news_ad2";
+    public static final String NO_ADS_COUNTRY="no_ads_country";
 
 
     /**
