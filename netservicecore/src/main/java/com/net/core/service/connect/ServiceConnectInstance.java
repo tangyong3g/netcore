@@ -213,21 +213,23 @@ public class ServiceConnectInstance {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                String bodyStr = response.body().string();
-                Log.i(TAG, "返回的原始数据是:\t" + bodyStr);
-                showReturnData(bodyStr);
+                try {
+                    String bodyStr = response.body().string();
+                    Log.i(TAG, "返回的原始数据是:\t" + bodyStr);
+                    showReturnData(bodyStr);
 
-                if (callbacks != null && !TextUtils.isEmpty(bodyStr)) {
-                    try {
+                    if (callbacks != null && !TextUtils.isEmpty(bodyStr)) {
+
                         for (Callback callBack : callbacks) {
                             callBack.onResponse(call, bodyStr);
                         }
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    } finally {
-                        if (response != null && response.body() != null) {
-                            response.body().close();
-                        }
+
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                } finally {
+                    if (response != null && response.body() != null) {
+                        response.body().close();
                     }
                 }
             }
