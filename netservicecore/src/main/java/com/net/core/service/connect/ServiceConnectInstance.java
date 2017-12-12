@@ -155,12 +155,13 @@ public class ServiceConnectInstance {
      * 异步处理序列化信息
      */
     private void asnySerilizable(final ServiceConnectConfig config) {
+        final ArrayList<ServiceConnectConfig> serviceConnectConfigs = new ArrayList<>(mCacheFetchData);
 
         Thread thread = new Thread() {
             @Override
             public void run() {
                 super.run();
-                writeObj(mCacheFetchData);
+                writeObj(serviceConnectConfigs);
             }
         };
         thread.start();
@@ -383,11 +384,14 @@ public class ServiceConnectInstance {
         }
 
         String urlParamsKey = initUrlParamsKey(url, params);
-
-        for (ServiceConnectConfig temp : mCacheFetchData) {
-            if (urlParamsKey.equals(temp.urlParamsKey)) {
-                config = temp;
-                return config;
+        if (mCacheFetchData != null) {
+            for (ServiceConnectConfig temp : mCacheFetchData) {
+                if (urlParamsKey != null && temp != null) {
+                    if (urlParamsKey.equals(temp.urlParamsKey)) {
+                        config = temp;
+                        return config;
+                    }
+                }
             }
         }
         return config;
