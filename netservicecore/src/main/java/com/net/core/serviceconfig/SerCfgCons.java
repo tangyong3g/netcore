@@ -61,7 +61,8 @@ public class SerCfgCons {
     public static final String LSCREEN_IS_SHOW_NEWS_AD1="lscreen_is_show_news_ad1";
     public static final String LSCREEN_IS_SHOW_NEWS_AD2="lscreen_is_show_news_ad2";
     public static final String NO_ADS_COUNTRY="no_ads_country";
-
+    public static final String BOOST_AD_SHOW_TIME="ad_show_time";
+    public static final String DRAWER_AD_SWITCH="drawer_ad_switch";
 
     /**
      *  note :
