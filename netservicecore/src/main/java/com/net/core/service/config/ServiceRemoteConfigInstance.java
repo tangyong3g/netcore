@@ -188,6 +188,39 @@ public class ServiceRemoteConfigInstance {
      * @param isSupportFirebase
      * @return
      */
+    public ServiceRemoteConfigInstance setIsSupportFireBase(boolean supportFireBase, int defaultRes, final OnFirebaseFectchComplete listener, long cacheExpiration) {
+        isSupportFirebase = supportFireBase;
+        //处理firebase
+        if (supportFireBase) {
+            Task task = FirebaseRemoteConfig.getInstance().fetch(cacheExpiration);
+            task.addOnCompleteListener(new OnCompleteListener() {
+                @Override
+                public void onComplete(@NonNull Task task) {
+                    if (task.isSuccessful()) {
+                        if (BuildConfig.DEBUG) {
+                            Log.i(TAG, "firebase fetch value success!");
+                        }
+                        FirebaseRemoteConfig.getInstance().activateFetched();
+                    } else {
+                        if (BuildConfig.DEBUG) {
+                            Log.i(TAG, "firebase fetch value fail!");
+                        }
+                    }
+                    listener.onComplete(task);
+                }
+            });
+        }
+        return this;
+    }
+
+    /**
+     * 是否支持firebase
+     * <p>
+     * TODO 把这个监听的接口放入这个里面才行，让外面的实现可以处理
+     *
+     * @param isSupportFirebase
+     * @return
+     */
     public ServiceRemoteConfigInstance setIsSupportFireBase(boolean supportFireBase, int defaultRes, final OnFirebaseFectchComplete listener) {
         isSupportFirebase = supportFireBase;
         //处理firebase
