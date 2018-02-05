@@ -31,8 +31,8 @@ public class FireBaseActivity extends Activity {
 
     private void initComponent() {
 
-        ServiceRemoteConfigInstance instance = ServiceRemoteConfigInstance.getInstance(this);
-        instance.setIsSupportFireBase(true);
+//        ServiceRemoteConfigInstance instance = ServiceRemoteConfigInstance.getInstance(this);
+//        instance.setIsSupportFireBase(true);
 
         mEdit = (EditText) findViewById(R.id.edit_key);
     }
@@ -76,15 +76,15 @@ public class FireBaseActivity extends Activity {
      */
     public void fetchFromServer(View view) {
 
-        ServiceRemoteConfigInstance instance = ServiceRemoteConfigInstance.getInstance(this);
-        instance.setIsSupportFireBase(true);
-
-        String key = mEdit.getText().toString();
-
-        if (!TextUtils.isEmpty(key)) {
-            String lastResult = instance.getString(key);
-            Log.i("tyler.tang", "value:" + lastResult);
-        }
+//        ServiceRemoteConfigInstance instance = ServiceRemoteConfigInstance.getInstance(this);
+//        instance.setIsSupportFireBase(true);
+//
+//        String key = mEdit.getText().toString();
+//
+//        if (!TextUtils.isEmpty(key)) {
+//            String lastResult = instance.getString(key);
+//            Log.i("tyler.tang", "value:" + lastResult);
+//        }
     }
 
 
