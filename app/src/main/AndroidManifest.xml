@@ -21,7 +21,8 @@
             android:label="@string/title_activity_service_connect" />
         <activity android:name=".connect.AdvertisementActivity" />
         <activity android:name=".connect.HotWActivity" />
-        <activity android:name=".FireBaseActivity"></activity>
+        <activity android:name=".FireBaseActivity" />
+        <activity android:name=".VolleyTest"></activity>
     </application>
 
 </manifest>

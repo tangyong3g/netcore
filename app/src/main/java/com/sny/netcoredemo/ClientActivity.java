@@ -27,6 +27,9 @@ public class ClientActivity extends BaseListActivity {
         info = new ItemComponentInfo("FireBaseConfig", FireBaseActivity.class);
         mItemsInfo.add(info);
 
+        info = new ItemComponentInfo("Volley", VolleyTest.class);
+        mItemsInfo.add(info);
+
         initDisplayList();
     }
 
