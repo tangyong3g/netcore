@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import okhttp3.Call;
 import okhttp3.MultipartBody;
@@ -49,7 +50,7 @@ public class ServiceConnectInstance {
     // TAG
     private static final String TAG = "ServiceConnect";
     //缓存服务器请求数据,同时封装了请求信息
-    private ArrayList<ServiceConnectConfig> mCacheFetchData = null;
+    private CopyOnWriteArrayList<ServiceConnectConfig> mCacheFetchData = null;
     //上下文
     private Context mContext;
     //序列化文件名
@@ -67,7 +68,7 @@ public class ServiceConnectInstance {
         mCacheFetchData = readObj();
 
         if (mCacheFetchData == null) {
-            mCacheFetchData = new ArrayList<ServiceConnectConfig>();
+            mCacheFetchData = new CopyOnWriteArrayList<ServiceConnectConfig>();
         }
 
     }
@@ -155,7 +156,7 @@ public class ServiceConnectInstance {
      * 异步处理序列化信息
      */
     private void asnySerilizable(final ServiceConnectConfig config) {
-        final ArrayList<ServiceConnectConfig> serviceConnectConfigs = new ArrayList<>(mCacheFetchData);
+        final CopyOnWriteArrayList<ServiceConnectConfig> serviceConnectConfigs = new CopyOnWriteArrayList<>(mCacheFetchData);
 
         Thread thread = new Thread() {
             @Override
@@ -463,7 +464,7 @@ public class ServiceConnectInstance {
      *
      * @param configs
      */
-    private void writeObj(ArrayList<ServiceConnectConfig> configs) {
+    private void writeObj(CopyOnWriteArrayList<ServiceConnectConfig> configs) {
 
         FileOutputStream fos = null;
         ObjectOutputStream oos = null;
@@ -495,7 +496,7 @@ public class ServiceConnectInstance {
      *
      * @return ArrayList<ServiceConnectConfig>
      */
-    private ArrayList<ServiceConnectConfig> readObj() {
+    private CopyOnWriteArrayList<ServiceConnectConfig> readObj() {
 
         if (BuildConfig.DEBUG) {
             Log.i(TAG, "read Serializable start!");
@@ -504,14 +505,14 @@ public class ServiceConnectInstance {
         File file = getInternalStorageFile();
         FileInputStream fis = null;
         ObjectInputStream ois = null;
-        ArrayList<ServiceConnectConfig> configList = null;
+        CopyOnWriteArrayList<ServiceConnectConfig> configList = null;
         try {
 
             //对象反序列化过程
             fis = new FileInputStream(file);
             ois = new ObjectInputStream(fis);
 
-            configList = (ArrayList<ServiceConnectConfig>) ois.readObject();
+            configList = (CopyOnWriteArrayList<ServiceConnectConfig>) ois.readObject();
 
         } catch (IOException ex) {
             ex.printStackTrace();
