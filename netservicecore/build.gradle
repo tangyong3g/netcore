@@ -1,6 +1,35 @@
 apply plugin: 'com.android.library'
 apply from: rootProject.file('gradle-mvn-push.gradle')
 
+/**
+ * 功能等同于  apply from: rootProject.file('gradle-mvn-push.gradle')
+ * 用于发布到 jcenter上面
+ */
+ext {
+    bintrayRepo = 'maven'
+    bintrayName = 'common'
+
+    publishedGroupId = 'com.sny.radish'
+    libraryName = 'netcore'
+    artifact = 'netcore'
+
+    libraryDescription = 'A net service on Android'
+
+    siteUrl = 'https://github.com/tangyong3g'
+    gitUrl = 'https://github.com/tangyong3g/netcore.git'
+
+    libraryVersion = '1.0.1'
+
+    developerId = 'tyler.tang'
+    developerName = 'tylre.tang'
+    developerEmail = 'ty_sany@163.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
+
 
 android {
 
@@ -62,3 +91,7 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.2.0'
     compile 'com.google.firebase:firebase-config:9.6.0'
 }
+
+
+apply from: rootProject.file('gradle-jcenter-push.gradle')
+
