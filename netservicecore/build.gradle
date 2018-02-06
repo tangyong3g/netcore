@@ -1,4 +1,6 @@
 apply plugin: 'com.android.library'
+apply from: rootProject.file('gradle-mvn-push.gradle')
+
 
 android {
 
@@ -53,6 +55,16 @@ android {
         abortOnError false
     }
 
+    compileOptions {
+        encoding "UTF-8"
+        //如果第二步设置的是GBK,这里就是GBK，如果第二步设置的是UTF-8这里就是UTF-8
+    }
+
+
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
 }
 
 dependencies {
