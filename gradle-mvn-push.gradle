@@ -20,7 +20,7 @@ def getRepositoryUsername() {
 }
 
 def getRepositoryPassword() {
-    return hasProperty('SONATYPE_NEXUS_PASSWORD') ? SONATYPE_NEXUS_PASSWORD : "tcl@1234"
+    return hasProperty('SONATYPE_NEXUS_PASSWORD') ? SONATYPE_NEXUS_PASSWORD : "tcl@1234Jira"
 }
 
 afterEvaluate { project ->

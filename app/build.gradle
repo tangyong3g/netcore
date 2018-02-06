@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
 
+
+
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.3"
@@ -70,15 +72,10 @@ android {
         }
     }
 
-    compileOptions {
-        encoding "UTF-8"
-        //如果第二步设置的是GBK,这里就是GBK，如果第二步设置的是UTF-8这里就是UTF-8
-    }
 }
 
-tasks.withType(JavaCompile) {
-    options.encoding = "UTF-8"
-}
+
+
 
 /**
  *
