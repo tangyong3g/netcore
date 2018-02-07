@@ -1,19 +1,26 @@
-/*
-*/
+/**/
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
+
+//aar包的版本
 version = "1.0.0"
 
-def siteUrl = 'https://github.com/tangyong3g/netcore'      // 项目的主页
-def gitUrl = 'https://github.com/tangyong3g/netcore.git'   // Git仓库的url
+// 项目的主页
+def siteUrl = 'https://github.com/tangyong3g/netcore'
+// Git仓库的url
+def gitUrl = 'https://github.com/tangyong3g/netcore.git'
+// GroupId
 group = "com.sny.radish"                                        // Maven Group ID for the artifact，一般填你唯一的包名
+
 install {
     repositories.mavenInstaller {
         pom {
             project {
                 packaging 'aar'
-                // Add your description here
+                //项目名
                 name 'netcore'
+                //项目名
+                artifactId 'netcore'
                 url siteUrl
                 // Set your license
                 licenses {
@@ -26,7 +33,7 @@ install {
                     developer {
                         id 'tyler.tang'
                         name 'tyler.tang'
-                        email 'ty_sany@163.com'
+                        email 'ty-sany@hotmail.com'
                     }
                 }
                 scm {
@@ -69,13 +76,13 @@ bintray {
         publish = true
     }
 }
-javadoc { //jav doc采用utf-8编码否则会报“GBK的不可映射字符”错误
+javadoc {
+//jav doc采用utf-8编码否则会报“GBK的不可映射字符”错误
     options {
         encoding "UTF-8"
         charSet 'UTF-8'
     }
 }
-
 
 /*
 
